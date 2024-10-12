@@ -16,8 +16,8 @@ export default async function register(req: Request, res: Response) {
         impressions,
         location
     } = req.body
-    const findEmail = await Users.email;
-    if (email === findEmail) {
+    const existingUser = await Users.findOne({ email });
+    if (existingUser) {
         res.status(400).json({ message: "User already exist"})
     }
     const salt = await bcrypt.genSalt();
@@ -31,8 +31,8 @@ export default async function register(req: Request, res: Response) {
         occupation,
         friends,
         picturePath,
-        viewedProfile,
-        impressions,
+        viewedProfile: Math.floor(Math.random() * 10000),
+        impressions: Math.floor(Math.random() * 10000),
         location
     })
     const savedUser = await newUser.save();
