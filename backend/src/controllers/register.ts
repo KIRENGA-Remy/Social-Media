@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Users from '../models/Users';
 import bcrypt from 'bcrypt'
 
-export default async function register(req: Request, res: Response) {
+export default async function register(req: Request, res: Response): Promise<void> {
   try {
     const {
         firstName,
@@ -36,8 +36,10 @@ export default async function register(req: Request, res: Response) {
         location
     })
     const savedUser = await newUser.save();
-    res.json({message:"User created successfully", savedUser})
+    res.status(201).json({message:"User created successfully", savedUser})
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });
   }
 }
+
+
