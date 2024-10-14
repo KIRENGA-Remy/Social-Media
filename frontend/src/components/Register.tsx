@@ -35,15 +35,21 @@ const Register: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:4321/api/register', formData); // Adjust the API route if necessary
+    const response = await fetch('http://localhost:4321',{
+        method: 'POST',
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({formData})
+    })
       setLoading(false);
       if (response.status === 201) {
-        navigate('/'); // Navigate to login after successful registration
+        navigate('/');
       }
     } catch (err: any) {
       setLoading(false);
       if (err.response && err.response.data.message) {
-        setError(err.response.data.message); // Display error from server
+        setError(err.response.data.message);
       } else {
         setError('Something went wrong. Please try again later.');
       }
@@ -51,89 +57,89 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-500 to-sky-400 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-        <h2 className="text-3xl font-semibold text-center mb-6">Create Account</h2>
+    <div className="min-h-screen bg-gradient-to-tr from-blue-700 to-blue-500 flex items-center justify-center">
+      <div className="bg-blue-900 shadow-lg rounded-lg p-8 max-w-md w-full">
+        <h2 className="text-3xl font-semibold text-center text-white mb-6">Create Account</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col">
-            <label className="text-gray-700">First Name</label>
+            <label className="text-white">First Name</label>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter your first name"
               required
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-700">Last Name</label>
+            <label className="text-white">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter your last name"
               required
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-700">Email</label>
+            <label className="text-white">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter your email"
               required
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-700">Password</label>
+            <label className="text-white">Password</label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter your password"
               required
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-700">Occupation</label>
+            <label className="text-white">Occupation</label>
             <input
               type="text"
               name="occupation"
               value={formData.occupation}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter your occupation"
               required
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-700">Profile Picture Path</label>
+            <label className="text-white">Profile Picture</label>
             <input
-              type="text"
+              type={"file"}
               name="picturePath"
               value={formData.picturePath}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter picture path"
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-700">Location</label>
+            <label className="text-white">Location</label>
             <input
               type="text"
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
               placeholder="Enter your location"
               required
             />
@@ -141,7 +147,7 @@ const Register: React.FC = () => {
           {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className={`w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition duration-300 ${
+            className={`w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition duration-300 ${
               loading && 'opacity-50 cursor-not-allowed'
             }`}
             disabled={loading}
@@ -149,9 +155,9 @@ const Register: React.FC = () => {
             {loading ? 'Creating Account...' : 'Register'}
           </button>
         </form>
-        <p className="mt-4 text-center">
+        <p className="mt-4 text-center text-white">
           Already have an account?{' '}
-          <a href="/" className="text-blue-500 hover:underline">
+          <a href="/" className="text-blue-300 hover:underline">
             Login here
           </a>
         </p>
