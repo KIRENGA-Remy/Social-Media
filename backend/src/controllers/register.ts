@@ -16,6 +16,8 @@ export default async function register(req: Request, res: Response): Promise<voi
         impressions,
         location
     } = req.body
+    console.log(req.body);
+    
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
         res.status(400).json({ message: "User already exist"})
@@ -36,6 +38,8 @@ export default async function register(req: Request, res: Response): Promise<voi
         location
     })
     const savedUser = await newUser.save();
+    console.log(savedUser);
+    
     res.status(201).json({message:"User created successfully", savedUser})
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });

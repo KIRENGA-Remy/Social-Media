@@ -3,11 +3,17 @@ import connectDB from './config/db'
 import dotenv from 'dotenv'
 import register from './controllers/register'
 import login from './controllers/login'
+import cors from 'cors'
 
 dotenv.config()
 const app = express()
 connectDB()
 app.use(express.json())
+app.use(cors({
+        origin: "http://localhost:4321",
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+        credentials: true
+      }));
 
 app.get("/", (req: Request, res: Response) => {
     res.send("I am here")
