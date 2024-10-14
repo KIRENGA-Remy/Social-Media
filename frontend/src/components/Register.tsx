@@ -8,7 +8,7 @@ interface RegisterFormData {
   email: string;
   password: string;
   occupation: string;
-  picturePath: string; // Updated to match backend field
+  picturePath: string; 
   location: string;
 }
 
@@ -19,7 +19,7 @@ const Register: React.FC = () => {
     email: '',
     password: '',
     occupation: '',
-    picturePath: '', // Updated to match backend field
+    picturePath: '', 
     location: '',
   });
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +52,7 @@ const Register: React.FC = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:4321', {
+      const response = await fetch('http://localhost:4321/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -142,8 +142,8 @@ const Register: React.FC = () => {
           <div className="flex flex-col">
             <label className="text-white">Profile Picture (Optional)</label>
             <input
-              type="file"
-              name="userprofile"
+              type={"file"}
+              name="picturePath"
               accept="image/*"
               onChange={handleUploadProfileImage}
               className="p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"

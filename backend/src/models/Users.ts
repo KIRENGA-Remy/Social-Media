@@ -10,20 +10,20 @@ export interface IUsers extends Document{
     picturePath: string,
     viewedProfile: Number,
     impressions: Number,
-    location: Number
+    location: string
 }
 
 const UsersSchema: Schema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     occupation: { type: String, required: true },
     friends: { type: [String], default: [] },
-    picturePath: { type: String, required: true },
-    viewedProfile: { type: Number, required: true },
-    impressions: { type: Number, required: true },
-    location: { type: String, required: true },
+    picturePath: { type: String },
+    viewedProfile: { type: Number },
+    impressions: { type: Number },
+    location: { type: String },
   });
 
   export default mongoose.model<IUsers>('Users', UsersSchema);
