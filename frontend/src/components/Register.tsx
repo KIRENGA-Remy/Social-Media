@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { imageToBase64 } from '../utility/ImageToBase64';
 
 interface RegisterFormData {
   firstName: string;
@@ -8,7 +8,7 @@ interface RegisterFormData {
   email: string;
   password: string;
   occupation: string;
-  picturePath: string;
+  picturePath: string; // Updated to match backend field
   location: string;
 }
 
@@ -19,40 +19,58 @@ const Register: React.FC = () => {
     email: '',
     password: '',
     occupation: '',
-    picturePath: '',
+    picturePath: '', // Updated to match backend field
     location: '',
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  // Handle input field change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // Handle image upload and convert to Base64
+  const handleUploadProfileImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return; // Guard clause for safety
+
+    const data = await imageToBase64(e.target.files[0]); // Convert image to base64
+    if (typeof data === 'string') {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        picturePath: data, // Updated field to match the backend model
+      }));
+    }
+  };
+
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
     try {
-    const response = await fetch('http://localhost:4321',{
+      const response = await fetch('http://localhost:4321', {
         method: 'POST',
         headers: {
-            "Content-Type":"application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({formData})
-    })
+        body: JSON.stringify(formData),
+      });
+
       setLoading(false);
-      if (response.status === 201) {
-        navigate('/');
-      }
-    } catch (err: any) {
-      setLoading(false);
-      if (err.response && err.response.data.message) {
-        setError(err.response.data.message);
+
+      if (response.ok) {
+        navigate('/'); // Redirect on success
       } else {
-        setError('Something went wrong. Please try again later.');
+        const result = await response.json();
+        setError(result.message || 'Failed to register.');
       }
+    } catch (err) {
+      setLoading(false);
+      setError('Something went wrong. Please try again later.');
     }
   };
 
@@ -122,14 +140,13 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-white">Profile Picture</label>
+            <label className="text-white">Profile Picture (Optional)</label>
             <input
-              type={"file"}
-              name="picturePath"
-              value={formData.picturePath}
-              onChange={handleChange}
-              className="p-2 border-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
-              placeholder="Enter picture path"
+              type="file"
+              name="userprofile"
+              accept="image/*"
+              onChange={handleUploadProfileImage}
+              className="p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
             />
           </div>
           <div className="flex flex-col">
@@ -148,7 +165,7 @@ const Register: React.FC = () => {
           <button
             type="submit"
             className={`w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition duration-300 ${
-              loading && 'opacity-50 cursor-not-allowed'
+              loading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={loading}
           >
