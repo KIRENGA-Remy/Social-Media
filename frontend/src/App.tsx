@@ -36,12 +36,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Users from './components/Users';
 import Register from './components/Register';
+import Dashboard from './components/Dashboard';
 const App: React.FC = () => (
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-			<Route path="/users" element={<Users />} />
+			<Route path="/home" element={<Dashboard />} />
 		</Routes>
 	</BrowserRouter>
 );
