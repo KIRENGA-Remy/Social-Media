@@ -26,6 +26,7 @@ const Login :React.FC = () => {
       // Handle form submission
       const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         setLoading(true);
         setError(null);
     
@@ -39,6 +40,7 @@ const Login :React.FC = () => {
           });
     
           setLoading(false);
+    console.log(response);
     
           if (response.ok) {
             navigate('/home'); // Redirect on success
@@ -48,10 +50,11 @@ const Login :React.FC = () => {
           }
         } catch (err) {
           setLoading(false);
+          console.log(" THIS IS THE ERROR ", err);
           setError('Something went wrong. Please try again later.');
         }
       };
-      
+
      return (
     <div className="bg-white flex flex-col mx-auto my-24 py-4 shadow-lg rounded-tl-none rounded-bl-none rounded-lg w-1/2 px-8 h-full">
     <h2 className="text-3xl font-bold text-center text- mb-6">Login</h2>
