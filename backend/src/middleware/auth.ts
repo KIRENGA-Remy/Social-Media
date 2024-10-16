@@ -6,7 +6,8 @@ interface CustomRequest extends Request{
 }
 
 export default function verifyToken(req: CustomRequest, res: Response, next:NextFunction){
-    let token = req.header("Authorization");
+    try {
+        let token = req.header("Authorization");
     if(!token){
         res.status(403).json({ message: "Access Denied"})
         return;
@@ -17,4 +18,7 @@ export default function verifyToken(req: CustomRequest, res: Response, next:Next
     }
     const verified = jwt.verify(token, process.env.JWT_SECRET as string)
     req.user = verified;
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid token", error: err.message });
+    }
 }
