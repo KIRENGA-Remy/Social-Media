@@ -6,6 +6,7 @@ import login from './controllers/login'
 import getUserFriends from './controllers/getUserFriends'
 import getUsers from './controllers/getUsers'
 import addRemoveFriend from './controllers/addRemoveFriend'
+import createPost from './controllers/createPost'
 import cors from 'cors'
 
 dotenv.config()
@@ -25,7 +26,8 @@ app.post("/auth/register", register)
 app.post("/auth/login", login)
 app.get("/users/:id", getUsers)
 app.get("/users/friends", getUserFriends)
-app.get("/users/:id/friends/:friendId", addRemoveFriend)
+app.patch("/users/:id/friends/:friendId", addRemoveFriend)
+app.post('/posts', createPost)
 
 const PORT = process.env.PORT || 4321;
 app.listen(PORT, () => {

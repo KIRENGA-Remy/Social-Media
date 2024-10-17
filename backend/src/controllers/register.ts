@@ -16,7 +16,6 @@ export default async function register(req: Request, res: Response): Promise<voi
         impressions,
         location
     } = req.body
-    console.log(req.body);
     
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
