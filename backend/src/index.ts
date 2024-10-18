@@ -7,6 +7,9 @@ import getUserFriends from './controllers/getUserFriends'
 import getUsers from './controllers/getUsers'
 import addRemoveFriend from './controllers/addRemoveFriend'
 import createPost from './controllers/createPost'
+import getUserPosts from './controllers/getUserPosts'
+import getFeedPosts from './controllers/getFeedPosts'
+import likePost from './controllers/likePost'
 import cors from 'cors'
 
 dotenv.config()
@@ -28,6 +31,9 @@ app.get("/users/:id", getUsers)
 app.get("/users/friends", getUserFriends)
 app.patch("/users/:id/friends/:friendId", addRemoveFriend)
 app.post('/posts', createPost)
+app.get('/posts', getFeedPosts)
+app.get('/posts/:userId', getUserPosts)
+app.patch('/posts/:id', likePost)
 
 const PORT = process.env.PORT || 4321;
 app.listen(PORT, () => {
