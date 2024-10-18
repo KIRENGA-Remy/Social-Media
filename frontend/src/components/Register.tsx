@@ -213,6 +213,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { imageToBase64 } from '../utility/ImageToBase64';
+import loginSignupImage from '../assets/login-animation.gif'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 
@@ -276,7 +277,10 @@ const Register: React.FC = () => {
 
   return (
     <div className="bg-gray-100 h-[660px] flex justify-center items-center  my-24 shadow-md mx-48 flex-row rounded-lg">
-        <div className='bg-green-500 h-full flex flex-col gap-6 items-center py-12 px-8 w-1/2 rounded-tr-none rounded-br-none rounded-lg'>
+        <div className='bg-green-500 h-full flex flex-col gap-6 items-center py-6 px-8 w-1/2 rounded-tr-none rounded-br-none rounded-lg'>
+          <div className='w-32 items-center my-4 overflow-hidden rounded-full'>
+            <img src={loginSignupImage} alt="image" className='w-full'/> 
+          </div>
             <p className='text-white font-semibold'>TRY FREE FOR 14 DAYS</p>
             <h1 className='text-white text-3xl font-bold'>Join +12,000 users <br/> worldwide</h1>
             <p className='text-lg text-white font-semibold'>"Take it for a spin, experience our fanatical support <br/> if you need any help, and <br/>
