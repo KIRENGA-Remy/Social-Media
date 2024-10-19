@@ -1,4 +1,4 @@
-import { StrictMode, version } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -14,6 +14,7 @@ const authPersistConfig = {
   key: "root",
   storage,
   blacklist: ["somethingTemporary"],
+  ignore: ["somethingTemporary"],
   version: 1
 };
 
@@ -34,9 +35,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)} >
-    <Header />
-    <App />
-    </PersistGate>
+        <Header />
+        <App />
+      </PersistGate>
     </Provider>
   </StrictMode>,
 )

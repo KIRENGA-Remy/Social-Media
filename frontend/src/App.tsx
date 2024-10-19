@@ -34,17 +34,30 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
-import Users from './pages/Users';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-const App: React.FC = () => (
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { themeSettings } from './theme';
+import { useSelector } from 'react-redux';
+import{ useMemo } from 'react'
+
+function App() {
+	const mode = useSelector((state: any) => state.mode) 
+	const theme = useMemo(() => createTheme(themeSettings(mode)), [mode])
+	return (
 	<BrowserRouter>
+	  <ThemeProvider theme={theme}>
+		<CssBaseline />
 		<Routes>
 			<Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
 			<Route path="/home" element={<Dashboard />} />
 		</Routes>
+	  </ThemeProvider>
 	</BrowserRouter>
-);
+	)
+};
 
 export default App
