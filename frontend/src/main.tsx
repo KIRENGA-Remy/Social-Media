@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import Header from './components/Header.tsx'
+import Navbar from './components/Navbar.tsx'
 import authReducer from './redux/authSlice.tsx';
 import { configureStore } from '@reduxjs/toolkit'
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistReducer, persistStore } from 'redux-persist';
@@ -35,7 +35,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)} >
-        <Header />
+        <Navbar />
         <App />
       </PersistGate>
     </Provider>

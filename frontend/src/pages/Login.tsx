@@ -155,7 +155,6 @@ const validationShema = Yup.object({
 const Login :React.FC = () => {
       const navigate = useNavigate();
     
-      // Handle form submission
       const handleSubmit = async (values: {email: string, password: string}, { setSubmitting, setErrors}: any) => {
         try {
           const response = await fetch('http://localhost:4321/auth/login', {
