@@ -33,15 +33,15 @@
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Users from './components/Users';
-import Register from './components/Register';
-import Dashboard from './components/Dashboard';
+import Login from './pages/Login';
+import Users from './pages/Users';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
 const App: React.FC = () => (
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+            <Route path="/register" element={<Register />} />
 			<Route path="/home" element={<Dashboard />} />
 		</Routes>
 	</BrowserRouter>
