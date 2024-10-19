@@ -223,7 +223,7 @@ const Login :React.FC = () => {
           </Form>
         ) }
     </Formik>
-    <p className="mt-2 text-center text-black flex justify-between">
+    <p className="mt-2 text-center text-black md:flex md:justify-between flex flex-col">
       Don't have an account?{' '}
       <a href="/register" className="text-black font-bold hover:underline">
         Register here

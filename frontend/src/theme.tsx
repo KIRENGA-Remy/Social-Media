@@ -47,7 +47,7 @@ export const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
             secondary: {
               dark: colorTokens.grey[100],
               main: colorTokens.grey[200],
-              light: colorTokens.grey[700],
+              light: colorTokens.grey[100],
             },
             background: {
               default: colorTokens.grey[900],
@@ -59,14 +59,12 @@ export const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
             primary: {
               dark: colorTokens.primary[700],
               main: colorTokens.primary[500],
-              light: colorTokens.primary[50],
+              light: colorTokens.primary[600],
             },
-            neutral: {
+            secondary: {
               dark: colorTokens.grey[700],
               main: colorTokens.grey[500],
-              mediumMain: colorTokens.grey[400],
-              medium: colorTokens.grey[300],
-              light: colorTokens.grey[50],
+              light: colorTokens.grey[500],
             },
             background: {
               default: colorTokens.grey[10]
