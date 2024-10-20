@@ -180,7 +180,7 @@ const Login :React.FC = () => {
       };
 
      return (
-    <div className="bg-white flex flex-col mx-auto my-24 py-4 shadow-2xl rounded-tl-none rounded-bl-none rounded-lg w-1/2 px-8 h-full">
+    <div className="bg-white flex flex-col mx-auto my-24 py-4 shadow-2xl rounded-tl-none rounded-bl-none rounded-lg md:w-1/2 w-11/12 px-8 h-full">
     <h2 className="text-3xl font-bold text-center text- mb-6">Login</h2>
 
     <Formik 

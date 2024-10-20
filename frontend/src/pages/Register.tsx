@@ -276,7 +276,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 h-[460px] flex justify-center items-center  my-24 shadow-md mx-48 flex-row rounded-lg">
+    <div className="bg-gray-100 h-[460px] flex justify-center items-center my-24 shadow-md md:mx-48 mx-8 flex-row rounded-lg">
         <div className='md:bg-green-500 md:h-full md:flex md:flex-col md:gap-6  md:py-6 md:px-8 md:w-1/2 md:rounded-tr-none md:rounded-br-none md:rounded-lg hidden'>
           <div className='w-32 items-center mx-auto my-4 overflow-hidden rounded-full'>
             <img src={loginSignupImage} alt="image" className='w-full'/> 
