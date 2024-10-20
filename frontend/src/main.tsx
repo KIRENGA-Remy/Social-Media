@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import authReducer from './redux/authSlice.tsx';
+import authReducer from './redux/userSlice.ts';
 import { configureStore } from '@reduxjs/toolkit'
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'

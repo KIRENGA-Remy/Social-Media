@@ -6,7 +6,7 @@ import {
   Search, Message, DarkMode, LightMode, Notifications, Help, Menu, Close
 } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
-import { setMode, setLogout } from '../redux/authSlice';
+import { setMode, setLogout } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
