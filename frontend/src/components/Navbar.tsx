@@ -85,7 +85,7 @@ function Navbar() {
               input={<InputBase />}
             >
               <MenuItem >
-                <Typography>remy</Typography>
+                <Typography>Remy</Typography>
               </MenuItem>
               <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
             </Select>
@@ -94,6 +94,7 @@ function Navbar() {
       ) : (
         <IconButton
           onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+          sx={{ margin: '12px', zIndex: '5'}}
         >
           <Menu />
         </IconButton>
@@ -101,11 +102,12 @@ function Navbar() {
 
             {/* MOBILE NAV */}
             {!isNonMobileScreens && isMobileMenuToggled && (
-        <div className={`fixed right-0 bottom-0 h-full z-10 max-w-[500px] min-w-[300px] bg-${background}`}>
+        <div className={`fixed right-0 bottom-4 h-full z-10 max-w-[500px] min-w-[200px] bg-${background}`}>
           {/* CLOSE ICON */}
           <Box display="flex" justifyContent="flex-end" p="1rem">
             <IconButton
               onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+              sx={{ position: 'fixed', right: '0px', margin: '12px', zIndex: '10'}}
             >
               <Close />
             </IconButton>
@@ -113,6 +115,7 @@ function Navbar() {
 
           {/* MENU ITEMS */}
           <div className='flex flex-col justify-center items-center gap-4'>
+          <div className='flex flex-row gap-8 items-center'>
             <IconButton
               onClick={() => dispatch(setMode())}
               sx={{ fontSize: "25px" }}
@@ -123,9 +126,12 @@ function Navbar() {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
-            <Help sx={{ fontSize: "25px" }} />
+            <Message sx={{ fontSize: "25px", cursor: 'pointer' }} />
+            </div>
+            <div className='flex flex-row gap-8 items-center'>
+            <Notifications sx={{ fontSize: "25px", cursor:'pointer' }} />
+            <Help sx={{ fontSize: "25px", cursor: 'pointer' }} />
+            </div>
             <FormControl variant="standard">
               <Select
                 sx={{
@@ -144,7 +150,7 @@ function Navbar() {
                 input={<InputBase />}
               >
                 <MenuItem>
-                  <Typography>remy</Typography>
+                  <Typography>Remy</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => dispatch(setLogout())}>
                   Log Out
