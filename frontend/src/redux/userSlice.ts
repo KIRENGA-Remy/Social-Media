@@ -13,7 +13,6 @@ export interface User {
   impressions: number,
   location: string
 }
-
 interface UserState {
   loading:boolean,
   user: User | null;  // Only one user
