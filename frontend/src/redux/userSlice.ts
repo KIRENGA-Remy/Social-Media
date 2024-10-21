@@ -1,95 +1,3 @@
-// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-// // Define Types for the state
-// interface User {
-//   id: string;
-//   friends: string[]; 
-//   firstName: string,
-//   lastName: string,
-//   email: string,
-//   password: string,
-//   occupation: string,
-//   picturePath: string,
-//   viewedProfile: Number,
-//   impressions: Number,
-//   location: string
-// }
-
-// interface Post {
-//   _id: string;
-//   userId: string,
-//   firstName: string, 
-//   lastName: string
-//   location: string,
-//   description: string,
-//   picturePath: string,
-//   userPicturePath: string,
-//   likes: Map<string, boolean>
-//   comments: string[]
-// }
-
-// interface AuthState {
-//   mode: "light" | "dark";
-//   user: User | null;
-//   token: string | null;
-//   posts: Post[];
-// }
-
-// const initialState: AuthState = {
-//   mode: "light",
-//   user: null,
-//   token: null,
-//   posts: []
-// };
-
-// // Create slice
-// export const authSlice = createSlice({
-//   name: "auth",
-//   initialState,
-//   reducers: {
-//     setMode: (state) => {
-//       state.mode = state.mode === "light" ? "dark" : "light";
-//     },
-//     setLogin: (state, action: PayloadAction<{ user: User; token: string }>) => {
-//       console.log(state.user);
-      
-//       state.user = action.payload.user;
-//       state.token = action.payload.token;
-//     },
-//     setLogout: (state) => {
-//       state.user = null;
-//       state.token = null;
-//     },
-//     setFriends: (state, action: PayloadAction<{ friends: string[] }>) => {
-//       if (state.user) {
-//         state.user.friends = action.payload.friends;
-//       } else {
-//         console.error("User is not logged in.");
-//       }
-//     },
-//     setPosts: (state, action: PayloadAction<{ posts: Post[] }>) => {
-//       state.posts = action.payload.posts;
-//     },
-//     setPost: (state, action: PayloadAction<{ post: Post }>) => {
-//       const updatedPosts = state.posts.map((post) =>
-//         post._id === action.payload.post._id ? action.payload.post : post
-//       );
-//       state.posts = updatedPosts;
-//     }
-//   }
-// });
-
-// export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } = authSlice.actions;
-// export default authSlice.reducer;
-
-
-
-
-
-
-
-
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface User {
@@ -107,6 +15,7 @@ export interface User {
 }
 
 interface UserState {
+  loading:boolean,
   user: User | null;  // Only one user
   mode: "light" | "dark";
   token: string | null;
@@ -115,6 +24,7 @@ interface UserState {
 const initialState: UserState = {
   user: null,  // Null initially, no user logged in
   mode: "light",
+  loading:false,
   token: null,
 }
 
@@ -125,8 +35,11 @@ export const UserSlice = createSlice({
     setMode: (state) => {
       state.mode = state.mode === "light" ? "dark" : "light";
     },
+    setLoading(state,action:PayloadAction<boolean>){
+    state.loading=action.payload
+    },
     setLogin: (state, action: PayloadAction<{ 
-      id: string,
+      _id: string,
       friends: string[]; 
       firstName: string,
       lastName: string,
@@ -141,7 +54,7 @@ export const UserSlice = createSlice({
     ) => {
       // Replace the current user with the logged-in user
       state.user = {
-        id: action.payload.id,
+        id: action.payload._id,
         friends: action.payload.friends,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
@@ -155,6 +68,7 @@ export const UserSlice = createSlice({
       };
       state.token = action.payload.token;
     },
+
     setLogout: (state) => {
       state.user = null;
       state.token = null;

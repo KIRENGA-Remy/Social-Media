@@ -29,6 +29,7 @@ export default async function login(req: Request, res: Response): Promise<void> 
       process.env.JWT_SECRET as string,  // Ensure type-casting to avoid TS errors
       { expiresIn: '1h' }  
     );
+    res.cookie("token",token)
 
     // Return token and user data
     res.status(200).json({message: "Logged in...", token, user });

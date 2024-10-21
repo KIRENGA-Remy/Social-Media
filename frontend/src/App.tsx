@@ -8,11 +8,13 @@ import { themeSettings } from './theme';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 function App() {
+  
   const mode = useSelector((state: any) => state.mode); // Get mode from Redux state (light/dark)
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]); // Create MUI theme based on mode
-
+  
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
@@ -25,7 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Dashboard />} />
+          <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
