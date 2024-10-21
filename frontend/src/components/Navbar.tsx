@@ -8,12 +8,13 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { setMode, setLogout } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../redux/store';
 
 function Navbar() {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: any) => state.user);
+  const {user} = useSelector((state: RootState) => state.user);
   console.log('here is user', user);
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");

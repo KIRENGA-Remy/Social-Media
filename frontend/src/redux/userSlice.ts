@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface User {
-  id: string;
+  _id: string;
   friends: string[]; 
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
   occupation: string,
   picturePath: string,
   viewedProfile: number,
@@ -43,7 +42,6 @@ export const UserSlice = createSlice({
       firstName: string,
       lastName: string,
       email: string,
-      password: string,
       occupation: string,
       picturePath: string,
       viewedProfile: number,
@@ -53,12 +51,11 @@ export const UserSlice = createSlice({
     ) => {
       // Replace the current user with the logged-in user
       state.user = {
-        id: action.payload._id,
+        _id: action.payload._id,
         friends: action.payload.friends,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         email: action.payload.email,
-        password: action.payload.password,
         occupation: action.payload.occupation,
         picturePath: action.payload.picturePath,
         viewedProfile: action.payload.viewedProfile,
@@ -72,8 +69,15 @@ export const UserSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+    setFriends: (state, action: PayloadAction<{ friends: string[]}>) => {
+      if(state.user){
+        state.user.friends = action.payload.friends
+      } else {
+        console.error("No user friend existing!")
+      }
+    }
   }
 });
 
-export const { setMode, setLogin, setLogout } = UserSlice.actions;
+export const { setMode, setLogin, setLogout, setFriends, setLoading } = UserSlice.actions;
 export default UserSlice.reducer;
