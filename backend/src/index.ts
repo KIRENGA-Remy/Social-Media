@@ -1,8 +1,9 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, urlencoded } from 'express';
 import connectDB from './config/db'
 import dotenv from 'dotenv'
 import register from './controllers/register'
 import login from './controllers/login'
+import auth from './controllers/auth'
 import getUserFriends from './controllers/getUserFriends'
 import getUsers from './controllers/getUsers'
 import addRemoveFriend from './controllers/addRemoveFriend'
@@ -11,22 +12,26 @@ import getUserPosts from './controllers/getUserPosts'
 import getFeedPosts from './controllers/getFeedPosts'
 import likePost from './controllers/likePost'
 import cors from 'cors'
+import cookieParser from 'cookie-parser';
 
 dotenv.config()
 const app = express()
 connectDB()
 app.use(express.json())
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true}))
 app.use(cors({
         origin: "http://localhost:5173",
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
         credentials: true
       }));
-
-app.get("/", (req: Request, res: Response) => {
+      
+    app.get("/", (req: Request, res: Response) => {
     res.send("I am here")
 })
 app.post("/auth/register", register)
 app.post("/auth/login", login)
+app.get("/auth/validate", auth)
 app.get("/users/:id", getUsers)
 app.get("/users/friends", getUserFriends)
 app.patch("/users/:id/friends/:friendId", addRemoveFriend)

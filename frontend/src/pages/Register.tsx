@@ -7,7 +7,23 @@ import * as Yup from 'yup';
 import { Typography } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'; // Import the icon
 
-const initialValues = {
+interface InitialValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  occupation: string;
+  picturePath: {
+    data: string;
+    name: string;
+  } | null;
+  location: string;
+  friends: string[];
+  viewedProfile: number;
+  impressions: number;
+}
+
+const initialValues: InitialValues = {
   firstName: '',
   lastName: '',
   email: '',
@@ -19,6 +35,7 @@ const initialValues = {
   viewedProfile: 0,
   impressions: 0,
 };
+
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required('First name is required'),
@@ -180,7 +197,7 @@ const Register: React.FC = () => {
                       <p className="hover:underline">Upload Image</p>
                     ) : (
                       <>
-                        <Typography>{values.picturePath.name}</Typography>
+                        <Typography>{values.picturePath.name }</Typography>
                         <EditOutlinedIcon className="ml-2" />
                       </>
                     )}

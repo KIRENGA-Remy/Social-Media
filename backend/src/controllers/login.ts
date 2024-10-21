@@ -9,31 +9,34 @@ export default async function login(req: Request, res: Response): Promise<void> 
   try {
     const { email, password } = req.body;
 
-    // Find user by email
     const user = await Users.findOne({ email });
     if (!user) {
-      res.status(400).json({ message: "User doesn't exist" });
-      return
+      res.status(401).json({ message: "User doesn't exist" });
+      return;
     }
 
-    // Compare passwords
     const comparePass = await bcrypt.compare(password, user.password);
     if (!comparePass) {
       res.status(400).json({ message: "Incorrect password" });
-      return
+      return;
     }
 
-    // Generate JWT token
     const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET as string,  // Ensure type-casting to avoid TS errors
-      { expiresIn: '1h' }  
+      { _id: user._id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: '1h' } 
     );
-    res.cookie("token",token)
 
-    // Return token and user data
-    res.status(200).json({message: "Logged in...", token, user });
+    res.cookie('token', token, {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production', 
+      maxAge: 3600000,
+      sameSite: 'lax', 
+    });
+
+    res.status(200).json({ message: 'Login successful', user });
   } catch (err) {
+    console.error(err); 
     res.status(500).json({ message: 'Server Error', err });
   }
 }
