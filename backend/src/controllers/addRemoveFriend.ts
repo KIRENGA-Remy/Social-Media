@@ -20,10 +20,10 @@ export default async function addRemoveFriend(req: Request, res: Response): Prom
                     friend.friends = friend.friends.filter((frendId) => frendId !== id)
                 } else {
                     user.friends.push(friendId)
-                    friend?.friends.push(id)
+                    friend.friends.push(id)
                 }
         await user.save();
-        await friend?.save();
+        await friend.save();
 
         const friends = await Promise.all(
             user.friends.map((id) => Users.findById(id))

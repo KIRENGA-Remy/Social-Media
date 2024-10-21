@@ -1,221 +1,11 @@
-// import React, { useState, ChangeEvent } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { imageToBase64 } from '../utility/ImageToBase64';
-
-// interface RegisterFormData {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   password: string;
-//   occupation: string;
-//   picturePath: string; 
-//   location: string;
-// }
-
-// const Register: React.FC = () => {
-//   const [formData, setFormData] = useState<RegisterFormData>({
-//     firstName: '',
-//     lastName: '',
-//     email: '',
-//     password: '',
-//     occupation: '',
-//     picturePath: '', 
-//     location: '',
-//   });
-//   const [error, setError] = useState<string | null>(null);
-//   const [loading, setLoading] = useState<boolean>(false);
-//   const navigate = useNavigate();
-
-//   // Handle input field change
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setFormData((prevData) => ({ ...prevData, [name]: value }));
-//   };
-
-//   // Handle image upload and convert to Base64
-//   const handleUploadProfileImage = async (e: ChangeEvent<HTMLInputElement>) => {
-//     if (!e.target.files) return; // Guard clause for safety
-
-//     const data = await imageToBase64(e.target.files[0]); // Convert image to base64
-//     if (typeof data === 'string') {
-//       setFormData((prevFormData) => ({
-//         ...prevFormData,
-//         picturePath: data, // Updated field to match the backend model
-//       }));
-//     }
-//   };
-
-//   // Handle form submission
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       const response = await fetch('http://localhost:4321/auth/register', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(formData),
-//       });
-
-//       setLoading(false);
-
-//       if (response.ok) {
-//         navigate('/'); // Redirect on success
-//       } else {
-//         const result = await response.json();
-//         setError(result.message || 'Failed to register.');
-//       }
-//     } catch (err) {
-//       setLoading(false);
-//       setError('Something went wrong. Please try again later.');
-//     }
-//   };
-
-//   return (
-//     <div className="bg-green-500 h-max flex justify-center items-center  my-24 shadow-md mx-48 flex-row rounded-lg">
-//         <div className='flex flex-col justify-center gap-12 px-8 w-1/2 h-full'>
-//             <p className='text-white font-semibold'>TRY FREE FOR 14 DAYS</p>
-//             <h1 className='text-white text-3xl font-bold'>Join over <br/> 12,000 users worldwide</h1>
-//             <p className='text-lg text-white font-semibold'>"Take it for a spin, experience our fanatical support <br/> if you need any help, and <br/>
-//                 you will love it too... I guarantee it". 
-//             </p>
-//             <h3 className='text-xl text-white font-bold'>GITOLI Remy Claudien, Founder</h3>
-//         </div>
-//       <div className="bg-white shadow-lg rounded-tl-none rounded-bl-none rounded-lg w-1/2 px-8 py-4 h-full">
-//         <h2 className="text-3xl font-bold text-center text- mb-6">Create Account</h2>
-//         <form onSubmit={handleSubmit} className="space-y-3">
-//           <div className="flex flex-col">
-//           <label className="text-black">First Name</label>
-//             <input
-//               type="text"
-//               name="firstName"
-//               value={formData.firstName}
-//               onChange={handleChange}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 md:w-full w-1/2 text-gray-700"
-//               placeholder="Enter your first name"
-//               required
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-black">Last Name</label>
-//             <input
-//               type="text"
-//               name="lastName"
-//               value={formData.lastName}
-//               onChange={handleChange}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-//               placeholder="Enter your last name"
-//               required
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-black">Email</label>
-//             <input
-//               type="email"
-//               name="email"
-//               value={formData.email}
-//               onChange={handleChange}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-//               placeholder="Enter your email"
-//               required
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-black">Password</label>
-//             <input
-//               type="password"
-//               name="password"
-//               value={formData.password}
-//               onChange={handleChange}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-//               placeholder="Enter your password"
-//               required
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-black">Occupation</label>
-//             <input
-//               type="text"
-//               name="occupation"
-//               value={formData.occupation}
-//               onChange={handleChange}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-//               placeholder="Enter your occupation"
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-black">Profile Picture (Optional)</label>
-//             <input
-//               type={"file"}
-//               name="picturePath"
-//               accept="image/*"
-//               onChange={handleUploadProfileImage}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-//             />
-//           </div>
-//           <div className="flex flex-col">
-//             <label className="text-black">Location</label>
-//             <input
-//               type="text"
-//               name="location"
-//               value={formData.location}
-//               onChange={handleChange}
-//               className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-//               placeholder="Enter your location"
-//               required
-//             />
-//           </div>
-//           <div className='pt-4'>
-//           {error && <p className="text-red-500">{error}</p>}
-//           <button
-//             type="submit"
-//             className={`w-full font-bold bg-green-600 text-white py-2 hover:bg-green-700 transition duration-300 ${
-//               loading ? 'opacity-50 cursor-not-allowed' : ''
-//             }`}
-//             disabled={loading}
-//           >
-//             {loading ? 'Creating Account...' : 'Register'}
-//           </button>
-//           </div>
-//         </form>
-//         <p className="mt-3 text-center text-black">
-//           Already have an account?{' '}
-//           <a href="/" className="text-black font-bold hover:underline">
-//             Login here
-//           </a>
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Register;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { imageToBase64 } from '../utility/ImageToBase64';
-import loginSignupImage from '../assets/login-animation.gif'
+import loginSignupImage from '../assets/login-animation.gif';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
+import { Typography } from '@mui/material';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'; // Import the icon
 
 const initialValues = {
   firstName: '',
@@ -223,35 +13,41 @@ const initialValues = {
   email: '',
   password: '',
   occupation: '',
-  picturePath: '', 
-  location: ''
-}
+  picturePath: null, 
+  location: '',
+  friends: [],
+  viewedProfile: 0,
+  impressions: 0,
+};
 
-const validationShema = Yup.object({
+const validationSchema = Yup.object({
   firstName: Yup.string().required('First name is required'),
   lastName: Yup.string().required('Last name is required'),
   email: Yup.string().email('Invalid email format').required('Email is required'),
-  password: Yup.string().min(8, 'Atleast 8 characters').required('Password is required'),
+  password: Yup.string().min(8, 'At least 8 characters').required('Password is required'),
   occupation: Yup.string().required('Occupation is required'),
   picturePath: Yup.string(),
-  location: Yup.string().required('Location is required')
-})
+  location: Yup.string().required('Location is required'),
+  friends: Yup.array(),
+  viewedProfile: Yup.number(),
+  impressions: Yup.number(),
+});
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
 
-    const handleUploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
-      if (!e.target.files) return;
-  
-      const data = await imageToBase64(e.target.files[0]);
-      if (typeof data === 'string') {
-        setFieldValue('picturePath', data);
-      }
-    };
+  const handleUploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
+    if (!e.target.files) return;
 
-  const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors} : any) => {
+    const data = await imageToBase64(e.target.files[0]);
+    if (typeof data === 'string') {
+      setFieldValue('picturePath', { data, name: e.target.files[0].name }); // store both data and name
+    }
+  };
 
+  const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors }: any) => {
     try {
+      setSubmitting(true);
       const response = await fetch('http://localhost:4321/auth/register', {
         method: 'POST',
         headers: {
@@ -259,46 +55,47 @@ const Register: React.FC = () => {
         },
         body: JSON.stringify(values),
       });
-      setSubmitting(true)
 
       if (response.ok) {
-        navigate('/'); 
+        navigate('/');
       } else {
         const result = await response.json();
-        setErrors({general: result.message || 'Failed to register.'});
+        setErrors({ general: result.message || 'Failed to register.' });
       }
     } catch (err) {
-      setSubmitting(false)
-      setErrors({general: 'Something went wrong. Please try again later.'});
-    } finally{
-      setSubmitting(false)
+      setSubmitting(false);
+      setErrors({ general: 'Something went wrong. Please try again later.' });
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <div className="bg-gray-100 h-[460px] flex justify-center items-center my-24 shadow-md md:mx-48 mx-8 flex-row rounded-lg">
-        <div className='md:bg-green-500 md:h-full md:flex md:flex-col md:gap-6  md:py-6 md:px-8 md:w-1/2 md:rounded-tr-none md:rounded-br-none md:rounded-lg hidden'>
-          <div className='w-32 items-center mx-auto my-4 overflow-hidden rounded-full'>
-            <img src={loginSignupImage} alt="image" className='w-full'/> 
-          </div>
-            <p className='text-white font-semibold mx-auto'>TRY FREE FOR 14 DAYS</p>
-            <h1 className='text-white text-3xl flex font-bold text-start'>Join +12,000 users <br/> worldwide</h1>
-            <p className='text-lg text-white font-semibold'>"Take it for a spin, experience our fanatical support <br/> if you need any help, and <br/>
-                you will love it too... I guarantee it". 
-            </p>
-            <h3 className='text-xl text-white font-bold items-start'>GITOLI Remy Claudien, Founder</h3>
+      <div className="md:bg-green-500 md:h-full md:flex md:flex-col md:gap-6 md:py-6 md:px-8 md:w-1/2 md:rounded-tr-none md:rounded-br-none md:rounded-lg hidden">
+        <div className="w-32 items-center mx-auto my-4 overflow-hidden rounded-full">
+          <img src={loginSignupImage} alt="image" className="w-full" />
         </div>
+        <p className="text-white font-semibold mx-auto">TRY FREE FOR 14 DAYS</p>
+        <h1 className="text-white text-3xl flex font-bold text-start">Join +12,000 users <br /> worldwide</h1>
+        <p className="text-lg text-white font-semibold">
+          "Take it for a spin, experience our fanatical support <br /> if you need any help, and <br />
+          you will love it too... I guarantee it".
+        </p>
+        <h3 className="text-xl text-white font-bold items-start">GITOLI Remy Claudien, Founder</h3>
+      </div>
+
       <div className="bg-white rounded-tl-none rounded-bl-none rounded-lg md:w-1/2 md:px-8 px-4 md:py-4 py-2 w-full h-full">
         <h2 className="text-3xl font-bold text-center mb-6 mt-2">Create Account</h2>
 
-        <Formik 
-        initialValues={initialValues}
-        validationSchema={validationShema}
-        onSubmit={handleSubmit}>
-          {({ isSubmitting, setFieldValue, errors }) => (
-
-<Form className="space-y-3">
-    <div className="flex flex-col w-full">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, setFieldValue, values }) => (
+            <Form className="space-y-3">
+              <div className="flex flex-col w-full">
       <label htmlFor="firstName" className="text-gray-600 font-semibold flex justify-between">
         First name
         <ErrorMessage name="firstName" component="div" className="text-red-500" />
@@ -373,31 +170,47 @@ const Register: React.FC = () => {
       />
     </div>
 
-  <div className="flex flex-col">
-    <label className="text-black">Profile Picture (Optional)</label>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={(e) => handleUploadProfileImage(e, setFieldValue)}
-      className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-    />
-  </div>
 
-  {/* Submit Button */}
-  <div className="pt-4">
-    <button
-      type="submit"
-      className={`w-full font-bold bg-green-600 text-white py-1 hover:bg-green-700 transition duration-300 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
-      disabled={isSubmitting}
-    >
-      {isSubmitting ? 'Creating Account...' : 'Register'}
-    </button>
-  </div>
-</Form>
+              {/* Profile Picture Upload */}
+              <div className="flex flex-col w-full">
+                <label className="text-gray-600 font-semibold flex justify-between">Profile Picture (Optional)</label>
+                <div className="p-1 rounded-sm font-bold w-full border border-[#20B486] flex items-center justify-center cursor-pointer">
+                  <label htmlFor="picturePath" className="cursor-pointer flex items-center">
+                    {!values.picturePath ? (
+                      <p className="hover:underline">Upload Image</p>
+                    ) : (
+                      <>
+                        <Typography>{values.picturePath.name}</Typography>
+                        <EditOutlinedIcon className="ml-2" />
+                      </>
+                    )}
+                  </label>
+                  <input
+                    id="picturePath"
+                    type="file"
+                    accept="image/*"
+                    name="picturePath"
+                    multiple={false}
+                    onChange={(e) => handleUploadProfileImage(e, setFieldValue)}
+                    className="hidden"
+                  />
+                </div>
+              </div>
 
-
+              {/* Submit Button */}
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  className={`w-full font-bold bg-green-600 text-white py-1 hover:bg-green-700 transition duration-300 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Creating Account...' : 'Register'}
+                </button>
+              </div>
+            </Form>
           )}
         </Formik>
+
         <p className="mt-2 text-center text-black flex justify-between">
           Already have an account?{' '}
           <a href="/" className="text-black font-bold hover:underline">
