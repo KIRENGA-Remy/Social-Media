@@ -11,6 +11,7 @@ import createPost from './controllers/createPost'
 import getUserPosts from './controllers/getUserPosts'
 import getFeedPosts from './controllers/getFeedPosts'
 import likePost from './controllers/likePost'
+import uploadRoute from './controllers/routeUpload'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import multer, { Multer } from 'multer';
@@ -32,13 +33,8 @@ app.use(cors({
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
         credentials: true
       }));
+app.use("/api/users" , uploadRoute);
 
-      cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_NAME, 
-        api_key: process.env.CLOUDINARY_API_KEY, 
-        api_secret: process.env.CLOUDINARY_SECRET,
-      });
-      
 app.get("/", (req: Request, res: Response) => {
     res.send("I am here")
 })
