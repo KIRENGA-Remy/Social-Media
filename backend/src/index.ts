@@ -13,6 +13,13 @@ import getFeedPosts from './controllers/getFeedPosts'
 import likePost from './controllers/likePost'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
+import multer, { Multer } from 'multer';
+import { 
+  v2 as cloudinary, 
+  UploadApiResponse, 
+  UploadApiErrorResponse
+ } from 'cloudinary';
+  import sharp from 'sharp';
 
 dotenv.config()
 const app = express()
@@ -25,8 +32,14 @@ app.use(cors({
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
         credentials: true
       }));
+
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_NAME, 
+        api_key: process.env.CLOUDINARY_API_KEY, 
+        api_secret: process.env.CLOUDINARY_SECRET,
+      });
       
-    app.get("/", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
     res.send("I am here")
 })
 app.post("/auth/register", register)

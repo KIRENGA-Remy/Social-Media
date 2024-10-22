@@ -17,13 +17,17 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
+    "@types/sharp": "^0.32.0",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.7.1"
+    "mongoose": "^8.7.1",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
