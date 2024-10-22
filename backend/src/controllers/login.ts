@@ -29,9 +29,11 @@ export default async function login(req: Request, res: Response): Promise<void> 
 
     res.cookie('token', token, {
       httpOnly: true, 
-      secure: process.env.NODE_ENV === 'production', 
+      secure: true, 
+      path:"/",
       maxAge: 3600000,
-      sameSite: 'lax', 
+      sameSite: 'none', 
+    
     });
 
     res.status(200).json({ message: 'Login successful', user });

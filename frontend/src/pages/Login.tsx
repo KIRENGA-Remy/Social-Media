@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -5,6 +6,7 @@ import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { setLogin } from '../redux/userSlice';
+import axios from 'axios'; // Import axios
 
 const initialValues = {
   email: '',
@@ -23,25 +25,29 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors }: any) => {
     try {
-      setSubmitting(true); 
-      const response = await fetch('http://localhost:4321/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
+      setSubmitting(true);
 
-      if (response.ok) {
-        const fetchedData = await response.json();
+      // Replace fetch with axios
+      const response = await axios.post(
+        'http://localhost:4321/auth/login',
+        values,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true, 
+        }
+      );
+
+      if (response.status === 200) {
+        const fetchedData = response.data;
         dispatch(setLogin(fetchedData.user));
         navigate('/home'); // Redirect on success
       } else {
-        const result = await response.json();
-        setErrors({ general: result.message || 'Failed to Login' });
+        setErrors({ general: response.data.message || 'Failed to Login' });
       }
-    } catch (err) {
-      setErrors({ general: 'Something went wrong. Please try again later.' });
+    } catch (err: any) {
+      setErrors({ general: err.response?.data?.message || 'Something went wrong. Please try again later.' });
     } finally {
       setSubmitting(false); // Form submission has ended
     }
@@ -49,11 +55,11 @@ const Login: React.FC = () => {
 
   return (
     <div className="bg-white flex flex-col mx-auto my-24 py-4 shadow-2xl rounded-tl-none rounded-bl-none rounded-lg md:w-1/2 w-11/12 px-8 h-full">
-      <h2 className="text-3xl font-bold text-center text- mb-6">Login</h2>
+      <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
 
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema} // Corrected typo here
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, errors }) => (
