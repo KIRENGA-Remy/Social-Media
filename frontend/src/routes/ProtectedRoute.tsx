@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { loading } = useSelector((state: RootState) => state.user);
+  const loading: boolean  = useSelector((state: RootState) => state.user.loading);
 
   useEffect(() => {
     const authenticate = async () => {
@@ -41,7 +41,11 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
   }, [dispatch, navigate]);
 
   if (loading) {
-    return <div className='text-black text-xl font-semibold flex items-center justify-center'>Loading...</div>;
+    return <> 
+    <div className="fixed inset-0 bg-[#20B486] bg-opacity-40 flex justify-center items-center z-10">
+    <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-[#20B486]"></div>
+    </div>
+  </>
   }
 
   return <div>{children}</div>;

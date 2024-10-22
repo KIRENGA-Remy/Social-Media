@@ -9,21 +9,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setMode, setLogout } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../redux/store';
+import { string } from 'yup';
 
 function Navbar() {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {user} = useSelector((state: RootState) => state.user);
-  console.log('here is user', user);
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-
   const theme = useTheme();
-  const neutralLight = theme.palette.secondary.light;
-  const dark = theme.palette.secondary.dark;
-  const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
+  const { neutralLight, dark, background, primaryLight } = {
+    neutralLight: theme.palette.secondary.light,
+    dark: theme.palette.secondary.dark,
+    background: theme.palette.background.default,
+    primaryLight: theme.palette.primary.light,
+  };
+  
+
+  const { user } = useSelector((state: RootState) => state.user);
+  const firstname = user?.firstName || 'Guest';
+
+  const handleLogout = () => {
+    dispatch(setLogout())
+    navigate('/')
+  }
 
   return (
     <div className="flex justify-between">
@@ -55,13 +64,14 @@ function Navbar() {
       </div>
       {isNonMobileScreens ? (
         <div className='flex gap-8 px-16 py-4 justify-center items-center'>
-          <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkMode sx={{ color: 'white', fontSize: '25px' }} />
-            ) : (
-              <LightMode sx={{ color: dark, fontSize: '25px' }} />
-            )}
-          </IconButton>
+<IconButton aria-label="toggle theme" onClick={() => dispatch(setMode())}>
+  {theme.palette.mode === "dark" ? (
+    <DarkMode sx={{ color: 'white', fontSize: '25px' }} />
+  ) : (
+    <LightMode sx={{ color: dark, fontSize: '25px' }} />
+  )}
+</IconButton>
+
           <Message sx={{ fontSize: '25px', cursor: 'pointer' }} />
           <Notifications sx={{ fontSize: '25px', cursor: 'pointer' }} />
           <Help sx={{ fontSize: '25px', cursor: 'pointer' }} />
@@ -83,9 +93,9 @@ function Navbar() {
               input={<InputBase />}
             >
               <MenuItem>
-                <Typography>Remy</Typography>
+              <Typography sx={{ fontSize:"12px", font: 'semibold', margin: 'auto'}}>{firstname}</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+              <MenuItem onClick={handleLogout} sx={{fontSize:"12px", font: 'semibold', justifyContent: 'center'}}>LogOut</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -130,29 +140,29 @@ function Navbar() {
               <Notifications sx={{ fontSize: "25px", cursor: 'pointer' }} />
               <Help sx={{ fontSize: "25px", cursor: 'pointer' }} />
             </div>
-            <FormControl variant="standard">
-              <Select
-                sx={{
-                  backgroundColor: neutralLight,
-                  width: "150px",
-                  borderRadius: "0.25rem",
-                  p: "0.25rem 1rem",
-                  "& .MuiSvgIcon-root": {
-                    pr: "0.25rem",
-                    width: "3rem",
-                  },
-                  "& .MuiSelect-select:focus": {
-                    backgroundColor: neutralLight,
-                  },
-                }}
-                input={<InputBase />}
-              >
-                <MenuItem>
-                  <Typography>Remy</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
-              </Select>
-            </FormControl>
+            <FormControl variant='standard'>
+  <Select
+    sx={{
+      backgroundColor: neutralLight,
+      width: "150px",
+      borderRadius: "0.25rem",
+      p: "0.25rem 1rem",
+      "& .MuiSvgIcon-root": {
+        pr: "0.25rem",
+        width: "3rem",
+      },
+      "& .MuiSelect-select:focus": {
+        backgroundColor: neutralLight,
+      },
+    }}
+    input={<InputBase />}
+  >
+    <MenuItem>
+      <Typography sx={{ fontSize:"12px", font: 'semibold', margin: 'auto'}}>{firstname}</Typography> 
+    </MenuItem>
+    <MenuItem onClick={handleLogout} sx={{fontSize:"12px", font: 'semibold', justifyContent: 'center'}}>LogOut</MenuItem>
+  </Select>
+</FormControl>
           </div>
         </div>
       )}
