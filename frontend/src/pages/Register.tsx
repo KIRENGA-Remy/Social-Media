@@ -6,6 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Typography } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'; // Import the icon
+import axios from 'axios';
 
 interface InitialValues {
   firstName: string;
@@ -36,51 +37,59 @@ const initialValues: InitialValues = {
   impressions: 0,
 };
 
-
 const validationSchema = Yup.object({
   firstName: Yup.string().required('First name is required'),
   lastName: Yup.string().required('Last name is required'),
   email: Yup.string().email('Invalid email format').required('Email is required'),
   password: Yup.string().min(8, 'At least 8 characters').required('Password is required'),
   occupation: Yup.string().required('Occupation is required'),
-  picturePath: Yup.string(),
+  picturePath: Yup.object({
+    data: Yup.string(),
+    name: Yup.string(),
+  }).nullable(),
   location: Yup.string().required('Location is required'),
-  friends: Yup.array(),
-  viewedProfile: Yup.number(),
-  impressions: Yup.number(),
 });
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleUploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
-    if (!e.target.files) return;
-
-    const data = await imageToBase64(e.target.files[0]);
-    if (typeof data === 'string') {
-      setFieldValue('picturePath', { data, name: e.target.files[0].name }); // store both data and name
+  const handleUploadProfileImage = async (
+    e: React.ChangeEvent<HTMLInputElement>, 
+    setFieldValue: (field: string, value: any) => void
+  ) => {
+    try {
+      if (!e.target.files) return;
+  
+      const data = await imageToBase64(e.target.files[0]);
+      if (typeof data === 'string') {
+        setFieldValue('picturePath', { data, name: e.target.files[0].name });
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
     }
   };
 
   const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors }: any) => {
     try {
       setSubmitting(true);
-      const response = await fetch('http://localhost:4321/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (response.ok) {
+      const response = await axios.post('http://localhost:4321/auth/register', 
+        values,
+        {
+          headers: {
+            "Content-Type":"application/json"
+          }
+        }
+      )
+      if (response.status === 200) {
+        await response.data;
         navigate('/');
       } else {
-        const result = await response.json();
-        setErrors({ general: result.message || 'Failed to register.' });
+        console.log(response.data);
+        setErrors({ general: response.data.message || 'Failed to register.' });
       }
     } catch (err) {
       setSubmitting(false);
+      console.log("getting error ", err);
       setErrors({ general: 'Something went wrong. Please try again later.' });
     } finally {
       setSubmitting(false);
