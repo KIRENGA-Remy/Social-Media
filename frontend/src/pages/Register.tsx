@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { imageToBase64 } from '../utility/ImageToBase64';
+import { imageToBase64 } from '../utility/ImageToBase64'; // Ensure this is properly implemented
 import loginSignupImage from '../assets/login-animation.gif';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Typography } from '@mui/material';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'; // Import the icon
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import axios from 'axios';
 
 interface InitialValues {
@@ -30,7 +30,7 @@ const initialValues: InitialValues = {
   email: '',
   password: '',
   occupation: '',
-  picturePath: null, 
+  picturePath: null,
   location: '',
   friends: [],
   viewedProfile: 0,
@@ -54,15 +54,15 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
 
   const handleUploadProfileImage = async (
-    e: React.ChangeEvent<HTMLInputElement>, 
+    e: React.ChangeEvent<HTMLInputElement>,
     setFieldValue: (field: string, value: any) => void
   ) => {
     try {
       if (!e.target.files) return;
-  
+
       const data = await imageToBase64(e.target.files[0]);
       if (typeof data === 'string') {
-        setFieldValue('picturePath', { data, name: e.target.files[0].name });
+        setFieldValue('picturePath', { data:e.target.files[0], name: e.target.files[0].name });
       }
     } catch (error) {
       console.error("Image upload error:", error);
@@ -72,29 +72,39 @@ const Register: React.FC = () => {
   const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors }: any) => {
     try {
       setSubmitting(true);
-      const response = await axios.post('http://localhost:4321/auth/register', 
-        values,
+      const response = await axios.post(
+        'http://localhost:4321/auth/register', 
+        {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          password: values.password,
+          image: values.picturePath?.data,
+          occupation: values.occupation,
+          email: values.email,
+          location: values.location
+        }, 
         {
           headers: {
-            "Content-Type":"application/json"
-          }
+            'Content-Type': 'multipart/form-data'
+          },
         }
-      )
-      if (response.status === 200) {
-        await response.data;
-        navigate('/');
-      } else {
-        console.log(response.data);
-        setErrors({ general: response.data.message || 'Failed to register.' });
-      }
-    } catch (err) {
-      setSubmitting(false);
-      console.log("getting error ", err);
+      ).then(function(response) {
+        console.log(response);
+      }).catch(function(error) {
+        console.log(error);
+      })
+
+  
+
+        navigate('/'); // Redirect after successful registration
+    } catch (err: any) {
+      console.error("Registration error:", err);
       setErrors({ general: 'Something went wrong. Please try again later.' });
     } finally {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <div className="bg-gray-100 h-[460px] flex justify-center items-center my-24 shadow-md md:mx-48 mx-8 flex-row rounded-lg">
@@ -121,81 +131,85 @@ const Register: React.FC = () => {
         >
           {({ isSubmitting, setFieldValue, values }) => (
             <Form className="space-y-3">
+              {/* Form Fields */}
+              {/* First Name */}
               <div className="flex flex-col w-full">
-      <label htmlFor="firstName" className="text-gray-600 font-semibold flex justify-between">
-        First name
-        <ErrorMessage name="firstName" component="div" className="text-red-500" />
-      </label>
-      <Field
-        type="text"
-        name="firstName"
-        className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-        placeholder="Enter your first name"
-      />
-    </div>
-    <div className="flex flex-col w-full ">
-      <label htmlFor="lastName" className="text-gray-600 font-semibold flex justify-between">
-        Last name
-        <ErrorMessage name="lastName" component="div" className="text-red-500" />
-      </label>
-      <Field
-        type="text"
-        name="lastName"
-        className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-        placeholder="Enter your last name"
-      />
-    </div>
-
-    <div className="flex flex-col w-full">
-      <label htmlFor="email" className="text-gray-600 font-semibold flex justify-between">
-        Email
-        <ErrorMessage name="email" component="div" className="text-red-500" />
-      </label>
-      <Field
-        type="email"
-        name="email"
-        className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-        placeholder="Enter your email"
-      />
-    </div>
-    <div className="flex flex-col w-full">
-      <label htmlFor="password" className="text-gray-600 font-semibold flex justify-between">
-        Password
-        <ErrorMessage name="password" component="div" className="text-red-500" />
-      </label>
-      <Field
-        type="password"
-        name="password"
-        className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-        placeholder="Enter your password"
-      />
-    </div>
-
-    <div className="flex flex-col w-full">
-      <label htmlFor="occupation" className="text-gray-600 font-semibold flex justify-between">
-        Occupation
-        <ErrorMessage name="occupation" component="div" className="text-red-500" />
-      </label>
-      <Field
-        type="text"
-        name="occupation"
-        className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-        placeholder="Enter your occupation"
-      />
-    </div>
-    <div className="flex flex-col w-full">
-      <label htmlFor="location" className="text-gray-600 font-semibold flex justify-between">
-        Location
-        <ErrorMessage name="location" component="div" className="text-red-500" />
-      </label>
-      <Field
-        type="text"
-        name="location"
-        className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
-        placeholder="Enter your location"
-      />
-    </div>
-
+                <label htmlFor="firstName" className="text-gray-600 font-semibold flex justify-between">
+                  First name
+                  <ErrorMessage name="firstName" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="firstName"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your first name"
+                />
+              </div>
+              {/* Last Name */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="lastName" className="text-gray-600 font-semibold flex justify-between">
+                  Last name
+                  <ErrorMessage name="lastName" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="lastName"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your last name"
+                />
+              </div>
+              {/* Email */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="email" className="text-gray-600 font-semibold flex justify-between">
+                  Email
+                  <ErrorMessage name="email" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="email"
+                  name="email"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your email"
+                />
+              </div>
+              {/* Password */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="password" className="text-gray-600 font-semibold flex justify-between">
+                  Password
+                  <ErrorMessage name="password" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="password"
+                  name="password"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your password"
+                />
+              </div>
+              {/* Occupation */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="occupation" className="text-gray-600 font-semibold flex justify-between">
+                  Occupation
+                  <ErrorMessage name="occupation" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="occupation"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your occupation"
+                />
+              </div>
+              {/* Location */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="location" className="text-gray-600 font-semibold flex justify-between">
+                  Location
+                  <ErrorMessage name="location" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="location"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your location"
+                />
+              </div>
 
               {/* Profile Picture Upload */}
               <div className="flex flex-col w-full">
@@ -206,7 +220,7 @@ const Register: React.FC = () => {
                       <p className="hover:underline">Upload Image</p>
                     ) : (
                       <>
-                        <Typography>{values.picturePath.name }</Typography>
+                        <Typography>{values.picturePath.name}</Typography>
                         <EditOutlinedIcon className="ml-2" />
                       </>
                     )}

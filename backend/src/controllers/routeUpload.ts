@@ -9,7 +9,7 @@ interface MulterRequest extends Request {
   file?: Express.Multer.File;
 }
 
-router.post('/upload', upload.single('image'), async (req: MulterRequest, res: Response): Promise<void> => {
+router.post('/register', upload.single('image'), async (req: MulterRequest, res: Response): Promise<void> => {
   try {
     if (!req.file) {
       res.status(400).json({ success: false, message: 'No file uploaded' });

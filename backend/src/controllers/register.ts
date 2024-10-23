@@ -16,6 +16,18 @@ export default async function register(req: Request, res: Response): Promise<voi
         impressions,
         location
     } = req.body
+    console.log(        
+      firstName,
+      lastName,
+      email,
+      password,
+      occupation,
+      friends,
+      viewedProfile,
+      impressions,
+      location);
+    
+    
     
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
@@ -23,24 +35,26 @@ export default async function register(req: Request, res: Response): Promise<voi
     }
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt)
-    
+    const image=req.file?.filename
     const newUser = new Users({
         firstName,
         lastName,
         email,
         password: hashedPassword,
         occupation,
-        friends,
-        picturePath,
+        picturePath:image,
         viewedProfile: Math.floor(Math.random() * 10000),
         impressions: Math.floor(Math.random() * 10000),
         location
     })
+    
     const savedUser = await newUser.save();
     console.log(savedUser);
     
     res.status(201).json({message:"User created successfully", savedUser})
   } catch (err) {
+
+    console.log(err)
     res.status(500).json({ message: 'Server Error', err });
   }
 }

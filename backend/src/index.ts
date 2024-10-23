@@ -12,33 +12,88 @@ import getUserPosts from './controllers/getUserPosts'
 import getFeedPosts from './controllers/getFeedPosts'
 import likePost from './controllers/likePost'
 import uploadRoute from './controllers/routeUpload'
+import cloudinary from './utils/cloudinary';
+import upload from './middleware/multer';
+import fs from 'fs';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import multer, { Multer } from 'multer';
-import { 
-  v2 as cloudinary, 
-  UploadApiResponse, 
-  UploadApiErrorResponse
- } from 'cloudinary';
-  import sharp from 'sharp';
+import sharp from 'sharp';
 
 dotenv.config()
 const app = express()
 connectDB()
-app.use(express.json())
+// app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true}))
+
+// app.use(express.urlencoded({ extended: true}))
 app.use(cors({
-        origin: "http://localhost:5173",
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
+        origin: process.env.CLIENT_URL || "http://localhost:5173",
+        methods: ['POST', 'GET', 'PUT', 'DELETE', 'PATCH'], 
         credentials: true
       }));
-app.use("/api/users" , uploadRoute);
+
+
+
+
+
+interface MulterRequest extends Request {
+  file?: Express.Multer.File;
+}
+
+// app.post("/auth/register", upload.single('image'), async (req: MulterRequest, res: Response, next) => {
+//   try {
+//     // If no file was uploaded, pass the request to the next middleware (register controller)
+//     if (!req.file) {
+//       res.status(400).json({ success: false, message: 'No file uploaded' });
+//       return next();
+//     }
+
+//     // If a file is uploaded, upload it to Cloudinary
+//     const result = await cloudinary.uploader.upload(req.file.path, {
+//       resource_type: 'image'
+//     });
+
+//     // Remove the file from the server after uploading to Cloudinary
+//     fs.unlinkSync(req.file.path);
+
+//     // Add the Cloudinary result to the request body (you can store the public_id and URL in MongoDB)
+//     req.body.picturePath = {
+//       data: process.env.CLOUDINARY_URL, // Cloudinary URL
+//       name: req.file.originalname
+//     };
+
+//     // Pass control to the register controller after uploading
+//     next();
+//   } catch (error) {
+//     console.error('Upload error:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Error during upload',
+//       error
+//     });
+//   }
+// }, register);
+
+app.post('/auth/register',upload.single('image'), register)
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get("/", (req: Request, res: Response) => {
     res.send("I am here")
 })
-app.post("/auth/register", register)
+// app.post("/auth/register", register)
 app.post("/auth/login", login)
 app.get("/auth/validate", auth)
 app.get("/users/:id", getUsers)
