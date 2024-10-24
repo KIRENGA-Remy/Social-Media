@@ -72,38 +72,45 @@ const Register: React.FC = () => {
   const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors }: any) => {
     try {
       setSubmitting(true);
-      const response = await axios.post(
-        'http://localhost:4321/auth/register', 
-        {
-          firstName: values.firstName,
-          lastName: values.lastName,
-          password: values.password,
-          image: values.picturePath?.data,
-          occupation: values.occupation,
-          email: values.email,
-          location: values.location
-        }, 
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-        }
-      ).then(function(response) {
-        console.log(response);
-      }).catch(function(error) {
-        console.log(error);
-      })
-
   
-
-        navigate('/'); // Redirect after successful registration
-    } catch (err: any) {
-      console.error("Registration error:", err);
-      setErrors({ general: 'Something went wrong. Please try again later.' });
+      const formData = new FormData();
+      formData.append('firstName', values.firstName);
+      formData.append('lastName', values.lastName);
+      formData.append('password', values.password);
+      formData.append('occupation', values.occupation);
+      formData.append('email', values.email);
+      formData.append('location', values.location);
+      if (values.picturePath) {
+        formData.append('image', values.picturePath.data); // Append the image data
+      }
+  
+      const response = await axios.post('http://localhost:4321/auth/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      // Log the message if registration is successful
+      console.log(response.data.message || "Registration successful");
+      
+      // Redirect after successful registration
+      navigate('/');
+  
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.message) {
+        // Log the backend error message (e.g., "User already exist")
+        console.error("Registration error:", error.response.data.message);
+      } else {
+        console.error("Registration error:", error);
+      }
+      
+      // Set form errors if needed
+      setErrors({ general: error.response?.data?.message || 'Something went wrong. Please try again later.' });
     } finally {
       setSubmitting(false);
     }
   };
+  
   
 
   return (

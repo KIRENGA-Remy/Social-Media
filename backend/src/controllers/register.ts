@@ -15,23 +15,12 @@ export default async function register(req: Request, res: Response): Promise<voi
         viewedProfile,
         impressions,
         location
-    } = req.body
-    console.log(        
-      firstName,
-      lastName,
-      email,
-      password,
-      occupation,
-      friends,
-      viewedProfile,
-      impressions,
-      location);
-    
-    
-    
+    } = req.body      
+
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
         res.status(400).json({ message: "User already exist"})
+        return;
     }
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt)
@@ -47,7 +36,6 @@ export default async function register(req: Request, res: Response): Promise<voi
         impressions: Math.floor(Math.random() * 10000),
         location
     })
-    
     const savedUser = await newUser.save();
     console.log(savedUser);
     
@@ -58,5 +46,3 @@ export default async function register(req: Request, res: Response): Promise<voi
     res.status(500).json({ message: 'Server Error', err });
   }
 }
-
-
