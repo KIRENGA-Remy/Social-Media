@@ -31,6 +31,13 @@ export const colorTokens = {
   },
 };
 
+// Extend the background interface in MUI theme
+declare module '@mui/material/styles' {
+  interface TypeBackground {
+    alt: string; 
+  }
+}
+
 // MUI theme settings
 export const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
   return {
@@ -51,7 +58,8 @@ export const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
             },
             background: {
               default: colorTokens.grey[900],
-              paper: colorTokens.grey[800] 
+              paper: colorTokens.grey[800],
+              alt: colorTokens.grey[700]
             },
           }
         : {
@@ -67,7 +75,8 @@ export const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
               light: colorTokens.grey[500],
             },
             background: {
-              default: colorTokens.grey[10]
+              default: colorTokens.grey[10],
+              alt: colorTokens.grey[0]
             },
           }),
     },

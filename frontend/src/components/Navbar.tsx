@@ -25,7 +25,6 @@ function Navbar() {
     primaryLight: theme.palette.primary.light,
   };
   
-
   const { user } = useSelector((state: RootState) => state.user);
   console.log(user)
   const firstname = user?.firstName || 'Guest';
