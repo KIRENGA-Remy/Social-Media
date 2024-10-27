@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { setLogin } from '../redux/userSlice';
 import KeyIcon from '@mui/icons-material/Key';
+import { Button, Stack } from '@mui/material';
 import axios from 'axios'; // Import axios
 
 const initialValues = {
@@ -97,7 +98,7 @@ const Login: React.FC = () => {
                 }`}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Logging in...' : <>Login <KeyIcon /></>}
+                {isSubmitting ? 'Logging in...' : <><KeyIcon /> Login</>}
               </button>
             </div>
           </Form>
