@@ -35,7 +35,6 @@ export default async function login(req: Request, res: Response): Promise<void> 
       sameSite: 'none', 
     
     });
-
     res.status(200).json({ message: 'Login successful', user });
   } catch (err) {
     console.error(err); 

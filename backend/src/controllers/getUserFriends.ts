@@ -3,8 +3,8 @@ import Users from '../models/Users'
 
 export default async function getUserFriends(req: Request, res: Response): Promise<void> {
     try {
-        const { id } = req.params;
-        const user = await Users.findById(id);
+        const { userId } = req.params;
+        const user = await Users.findById(userId);
         if (!user) {
             res.status(404).json({ message: "User not found" });
             return;

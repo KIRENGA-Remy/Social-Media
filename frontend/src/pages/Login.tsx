@@ -3,11 +3,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch} from '../redux/store';
 import { setLogin } from '../redux/userSlice';
 import KeyIcon from '@mui/icons-material/Key';
-import { Button, Stack } from '@mui/material';
+// import { Button, Stack } from '@mui/material';
 import axios from 'axios'; // Import axios
 
 const initialValues = {
@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
 });
 
 const Login: React.FC = () => {
-  const { user } = useSelector((state: RootState) => state.user);
+  // const { user } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
     } catch (err: any) {
       setErrors({ general: err.response?.data?.message || 'Something went wrong. Please try again later.' });
     } finally {
-      setSubmitting(false); // Form submission has ended
+      setSubmitting(false); 
     }
   };
 
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, errors }) => (
+        {({ isSubmitting }) => (
           <Form className="space-y-3">
             <div className="flex flex-col w-full">
               <label htmlFor="email" className="text-gray-600 font-semibold flex justify-between">

@@ -77,27 +77,14 @@ interface MulterRequest extends Request {
 // }, register);
 
 app.post('/auth/register',upload.single('image'), register)
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get("/", (req: Request, res: Response) => {
     res.send("I am here")
 })
 // app.post("/auth/register", register)
 app.post("/auth/login", login)
 app.get("/auth/validate", auth)
-app.get("/users/:id", getUsers)
-app.get("/users/friends", getUserFriends)
+app.get("/users/:userId", getUsers)
+app.get("/users/:userId/friends", getUserFriends)
 app.patch("/users/:id/friends/:friendId", addRemoveFriend)
 app.post('/posts', createPost)
 app.get('/posts', getFeedPosts)

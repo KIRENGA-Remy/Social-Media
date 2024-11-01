@@ -5,7 +5,7 @@ import postSlice from './postSlice';
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    post: postSlice
+    posts: postSlice
   }
 })
 export type AppStore = typeof store

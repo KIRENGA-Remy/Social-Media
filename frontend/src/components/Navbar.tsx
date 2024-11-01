@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box, IconButton, InputBase, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery
 } from '@mui/material';
@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setMode, setLogout } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../redux/store';
-import { string } from 'yup';
 
 function Navbar() {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
