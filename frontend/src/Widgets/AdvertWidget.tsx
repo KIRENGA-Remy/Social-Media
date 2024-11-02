@@ -1,7 +1,6 @@
 import { Typography, useTheme } from "@mui/material";
 import WidgetWrapper from "../components/WidgetWrapper";
 
-// const theme = useTheme();
 const AdvertWidget: React.FC = () => {
   const { palette } = useTheme();
   const dark = palette.secondary.dark;
@@ -20,7 +19,7 @@ const AdvertWidget: React.FC = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="http://localhost:3001/assets/info4.jpeg"
+        src="http://localhost:4321/assets/ba.png"
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <div className="flex justify-between gap-2">

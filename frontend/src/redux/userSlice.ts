@@ -17,6 +17,7 @@ interface UserState {
   user: User | null;  // Only one user
   mode: "light" | "dark";
   token: string | null;
+  error: string | null;
 }
 
 const initialState: UserState = {
@@ -24,6 +25,7 @@ const initialState: UserState = {
   mode: "light",
   loading:false,
   token: null,
+  error: null,
 }
 
 export const UserSlice = createSlice({
@@ -75,9 +77,12 @@ export const UserSlice = createSlice({
       } else {
         console.error("No user friend existing!")
       }
-    }
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+      }
   }
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setLoading } = UserSlice.actions;
+export const { setMode, setLogin, setLogout, setFriends, setLoading, setError } = UserSlice.actions;
 export default UserSlice.reducer;

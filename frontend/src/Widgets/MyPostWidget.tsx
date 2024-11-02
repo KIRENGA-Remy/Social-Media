@@ -58,8 +58,8 @@ import axios from "axios";
     
         // Only append image if it's not null
         if (image) {
-            formData.append("picture", image); // This is safe
-            formData.append("picturePath", image.name); // Now this is also safe
+            formData.append("picture", image); 
+            formData.append("picturePath", image.name); 
         }
     
         try {
@@ -101,13 +101,13 @@ import axios from "axios";
             mt="1rem"
             p="1rem"
           >
-<Dropzone
-  onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
-  accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }} 
-  multiple={false}
->
-  {({ getRootProps, getInputProps }) => (
-    <div>
+          <Dropzone
+              onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+              accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }} 
+              multiple={false}
+            >
+          {({ getRootProps, getInputProps }) => (
+      <div>
       <Box
         {...getRootProps()}
         border={`2px dashed ${palette.primary.main}`}
