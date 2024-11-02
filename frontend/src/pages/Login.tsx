@@ -44,7 +44,7 @@ const Login: React.FC = () => {
       if (response.status === 200) {
         const fetchedData = response.data;
         dispatch(setLogin(fetchedData.user));
-        navigate('/home'); // Redirect on success
+        navigate('/create/post'); // Redirect on success
       } else {
         setErrors({ general: response.data.message || 'Failed to Login' });
       }

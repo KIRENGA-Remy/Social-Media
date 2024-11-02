@@ -14,7 +14,6 @@ interface PostsWidgetProps {
 const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.posts);
-//   const token = useSelector((state: RootState) => state.token);
 
   const getPosts = async () => {
     try {
@@ -50,37 +49,20 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
 
   return (
     <>
-      {posts.map((post: Post) => {
-        const {
-          _id,
-          userId,
-          firstName,
-          lastName,
-          description,
-          location,
-          picturePath,
-          userPicturePath,
-          likes,
-          comments,
-        } = post;
-
-        const likesRecord: Record<string, boolean> = Object.fromEntries(likes);
-
-        return (
-          <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={`${firstName} ${lastName}`}
-            description={description}
-            location={location}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            likes={likesRecord}
-            comments={comments}
-          />
-        );
-      })}
+      {posts.map((post: Post) => (
+        <PostWidget
+          key={post._id}
+          postId={post._id}
+          postUserId={post.userId}
+          name={`${post.firstName} ${post.lastName}`}
+          description={post.description}
+          location={post.location?.trim() || ""} 
+          picturePath={post.picturePath}
+          userPicturePath={post.userPicturePath}
+          likes={Object.fromEntries(post.likes)} 
+          comments={post.comments || []} 
+        />
+      ))}
     </>
   );
 };

@@ -8,7 +8,7 @@ export interface IPosts extends Document{
       description: string,
       picturePath: string,
       userPicturePath: string,
-      likes: Map<string, boolean>
+      likes: Map<string, boolean>,
       comments: string[]
 }
 

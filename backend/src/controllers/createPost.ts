@@ -1,10 +1,14 @@
 import { Request, Response }  from 'express';
 import Posts from '../models/Posts';
 import Users from '../models/Users'
+import { log } from 'console';
 
 export default async function createPost(req: Request, res: Response) {
     try {
         const {userId, description, picturePath} = req.body;
+        console.log(req.body.description);
+        console.log(req.body.userId);
+        console.log(req.body.picturePath);
         const user = await Users.findById(userId);
         if(!user){
             res.status(404).json({ message: "User not found"})

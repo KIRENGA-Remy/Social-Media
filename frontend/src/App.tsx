@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './routes/ProtectedRoute';
+import PostCreation from './pages/PostCreation';
 
 function App() {
   
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create/post" element={<PostCreation />} />
           <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
       </ThemeProvider>
