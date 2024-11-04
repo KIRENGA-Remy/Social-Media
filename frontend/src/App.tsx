@@ -10,24 +10,27 @@ import { useMemo } from 'react';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './routes/ProtectedRoute';
 import PostCreation from './pages/PostCreation';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   
   const mode = useSelector((state: any) => state.mode); 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]); 
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/create/post" element={<PostCreation />} />
-          <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        </Routes>
-      </ThemeProvider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+  <CssBaseline />
+  <BrowserRouter>
+    <ErrorBoundary>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/create/post" element={<PostCreation />} />
+        <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      </Routes>
+    </ErrorBoundary>
+  </BrowserRouter>
+</ThemeProvider>
   );
 }
 
