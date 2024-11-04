@@ -10,7 +10,6 @@ const PostCreation: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { user } = useSelector((state: RootState) => state.user);
-console.log(user?._id);
 
   const [description, setDescription] = useState('');
   const [picturePath, setPicturePath] = useState<string>('');
@@ -57,8 +56,8 @@ console.log(user?._id);
         dispatch({ type: 'ADD_POST', payload: response.data.post });
         navigate('/home')
       }
-    } catch (error) {
-      console.error('Error creating post:', error);
+    } catch (err) {
+      console.error('Error creating post:', err);
     } finally {
       setIsCreating(false);
       setDescription('');
