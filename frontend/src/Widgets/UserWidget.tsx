@@ -30,12 +30,11 @@ interface User {
 
 const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
   const [user, setUser] = useState<User | null>(null);
-  const { palette } = useTheme();
-  console.log(palette);
+  const theme = useTheme();
   const navigate = useNavigate();
-  const dark = palette.secondary.dark;
-  const medium = palette.secondary.light;
-  const main = palette.secondary.main;
+  const dark = theme.palette.secondary.dark;
+  const medium = theme.palette.secondary.light;
+  const main = theme.palette.secondary.main;
 
   const getUser = async () => {
     try {
@@ -74,7 +73,7 @@ const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
               sx={{
                 cursor: "pointer",
                 "&:hover": {
-                  color: palette.primary.light,
+                  color: theme.palette.primary.light,
                 },
               }}
             >

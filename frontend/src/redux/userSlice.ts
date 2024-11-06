@@ -17,7 +17,6 @@ interface UserState {
   user: User | null;  
   isAuthenticated: boolean;
   mode: "light" | "dark";
-  token: string | null;
   error: string | null;
 }
 
@@ -26,7 +25,6 @@ const initialState: UserState = {
   isAuthenticated: false,
   mode: "light",
   loading:false,
-  token: null,
   error: null,
 }
 
@@ -50,8 +48,7 @@ export const UserSlice = createSlice({
       picturePath: string,
       viewedProfile: number,
       impressions: number,
-      location: string,
-      token: string }>
+      location: string }>
     ) => {
       state.user = {
         _id: action.payload._id,
@@ -65,13 +62,11 @@ export const UserSlice = createSlice({
         impressions: action.payload.impressions,
         location: action.payload.location,
       };
-      state.token = action.payload.token;
       state.isAuthenticated = true;
     },
 
     setLogout: (state) => {
       state.user = null;
-      state.token = null;
       state.isAuthenticated = false;
     },
     setFriends: (state, action: PayloadAction<{ friends: string[]}>) => {

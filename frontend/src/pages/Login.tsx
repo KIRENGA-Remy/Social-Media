@@ -1,14 +1,13 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, RootState} from '../redux/store';
+import { AppDispatch} from '../redux/store';
 import { setLogin } from '../redux/userSlice';
 import KeyIcon from '@mui/icons-material/Key';
 // import { Button, Stack } from '@mui/material';
 import axios from 'axios'; // Import axios
-import { useSelector } from 'react-redux';
 
 const initialValues = {
   email: '',
@@ -24,13 +23,11 @@ const Login: React.FC = () => {
   // const { user } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated)
 
   const handleSubmit = async (values: typeof initialValues, { setSubmitting, setErrors }: any) => {
     try {
       setSubmitting(true);
 
-      // Replace fetch with axios
       const response = await axios.post(
         'http://localhost:4321/auth/login',
         values,
@@ -45,7 +42,7 @@ const Login: React.FC = () => {
       if (response.status === 200) {
         const fetchedData = response.data;
         dispatch(setLogin(fetchedData.user));
-        isAuthenticated ? navigate('/create/post') : <Navigate to="/" replace /> 
+        navigate('/create/post');
       } else {
         setErrors({ general: response.data.message || 'Failed to Login' });
       }

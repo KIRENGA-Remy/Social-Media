@@ -34,11 +34,6 @@ app.use(cors({
         methods: ['POST', 'GET', 'PUT', 'DELETE', 'PATCH'], 
         credentials: true
       }));
-
-
-
-
-
 interface MulterRequest extends Request {
   file?: Express.Multer.File;
 }
