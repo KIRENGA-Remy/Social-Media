@@ -25,7 +25,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create/post" element={<PostCreation />} />
-        <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/home" element={<Dashboard />} />
       </Routes>
     </ErrorBoundary>
   </BrowserRouter>

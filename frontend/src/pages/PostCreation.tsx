@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { imageToBase64 } from '../utility/ImageToBase64';
 import { useNavigate } from 'react-router-dom';
+import { setPosts } from '../redux/postSlice';
 
 const PostCreation: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,12 +49,14 @@ const PostCreation: React.FC = () => {
           description,
           picturePath,
         },
+        
         { withCredentials: true }
       );
 
       if (response.status === 200) {
         console.log('Post created successfully');
-        dispatch({ type: 'ADD_POST', payload: response.data.post });
+        const updatedPosts = response.data.posts;
+        dispatch(setPosts({ posts: updatedPosts }));
         navigate('/home')
       }
     } catch (err) {
