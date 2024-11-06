@@ -35,33 +35,28 @@ import axios from "axios";
     const [isImage, setIsImage] = useState(false);
     const [image, setImage] = useState<File | null>(null);
     const [post, setPost] = useState("");
-    const { palette } = useTheme();
-    // const id = useSelector((state: RootState) => state.user._id);
+    const theme = useTheme();
     const { user } = useSelector((state: RootState) => state.user); 
-    // const token = useSelector((state: RootState) => state.token);
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-    const mediumMain = palette.secondary.dark;
-    const medium = palette.secondary.light;
+    const mediumMain = theme.palette.secondary.dark;
+    const medium = theme.palette.secondary.light;
 
     const handlePost = async () => {
         const formData = new FormData();
-        
-        // Ensure id is a string
+
         if (user?._id) {
             formData.append("userId", user?._id);
         } else {
             console.error("User ID is null. Post cannot be created.");
-            return; // Prevent further execution if id is null
+            return; 
         }
     
         formData.append("description", post);
     
-        // Only append image if it's not null
         if (image) {
             formData.append("picture", image); 
             formData.append("picturePath", image.name); 
         }
-    
         try {
             const response = await axios.post(`http://localhost:4321/posts`,
                 formData ,
@@ -88,7 +83,7 @@ import axios from "axios";
             value={post}
             sx={{
               width: "100%",
-              backgroundColor: palette.secondary.light,
+              backgroundColor: theme.palette.secondary.light,
               borderRadius: "2rem",
               padding: "1rem 2rem",
             }}
@@ -110,16 +105,16 @@ import axios from "axios";
       <div>
       <Box
         {...getRootProps()}
-        border={`2px dashed ${palette.primary.main}`}
+        border={`2px dashed ${theme.palette.primary.main}`}
         p="1rem"
         width="100%"
         sx={{ "&:hover": { cursor: "pointer" } }}
       >
         <input {...getInputProps()} />
         {!image ? (
-          <p>Add Image Here</p>
+          <p className="cursor-pointer">Add Image Here</p>
         ) : (
-          <div>
+          <div className="cursor-pointer">
             <Typography>{image.name}</Typography>
             <EditOutlined />
           </div>
@@ -179,8 +174,8 @@ import axios from "axios";
             disabled={!post}
             onClick={handlePost}
             sx={{
-              color: palette.background.alt,
-              backgroundColor: palette.primary.main,
+              color: theme.palette.background.alt,
+              backgroundColor: theme.palette.primary.main,
               borderRadius: "3rem",
             }}
           >

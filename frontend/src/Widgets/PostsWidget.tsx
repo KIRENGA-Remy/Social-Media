@@ -14,6 +14,7 @@ interface PostsWidgetProps {
 const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.posts);
+  console.log(posts);
 
   const getPosts = async () => {
     try {

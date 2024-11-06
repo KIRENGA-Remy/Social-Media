@@ -10,14 +10,9 @@ import { RootState } from "../redux/store";
 
 const Dashboard: React.FC = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-
-  // Using RootState type to define the structure of the user object
   const { user } = useSelector((state: RootState) => state.user);
-  // const picturePath = useSelector((state: RootState) => state.user?.user?.picturePath); 
-
-  // Ensure that id and picturePath are defined before rendering
   if (!user?._id || !user?.picturePath) {
-    return <div>Loading...</div>; // or any other loading component
+    return <div>Loading...</div>; 
   }
 
   return (

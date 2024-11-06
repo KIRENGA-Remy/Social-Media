@@ -7,7 +7,7 @@ import { createTheme } from '@mui/material/styles';
 import { themeSettings } from './theme';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
-import ProtectedRoute from './routes/ProtectedRoute';
+// import ProtectedRoute from './routes/ProtectedRoute';
 import PostCreation from './pages/PostCreation';
 import ErrorBoundary from './components/ErrorBoundary';
 import { RootState } from './redux/store';

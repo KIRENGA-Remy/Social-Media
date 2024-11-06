@@ -2,15 +2,17 @@ import {
   ManageAccountsOutlined,
   EditOutlined,
   LocationOnOutlined,
-  WorkOutlineOutlined,
+  WorkOutlineOutlined
 } from "@mui/icons-material";
+import XIcon from '@mui/icons-material/X';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "../components/UserImage";
 import WidgetWrapper from "../components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import twitter from '../assets/twitter.png';
-import linkedin from '../assets/linkedin.png';
+// import twitter from '../assets/twitter.png';
+// import linkedin from '../assets/linkedin.png';
 import axios from "axios";
 
 interface UserWidgetProps {
@@ -127,7 +129,7 @@ const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
 
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="0.5rem">
           <Box display="flex" alignItems="center" gap="1rem">
-            <img src={twitter} alt="Twitter logo" width="24" height="24" />
+            <XIcon fontSize="large" sx={{ color: main }} />
             <Box>
               <Typography color={main} fontWeight="500">Twitter</Typography>
               <Typography color={medium}>Social Network</Typography>
@@ -138,7 +140,7 @@ const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap="1rem">
-            <img src={linkedin} alt="LinkedIn logo" width="24" height="24" />
+          <LinkedInIcon fontSize="large" sx={{ color: main }} />
             <Box>
               <Typography color={main} fontWeight="500">LinkedIn</Typography>
               <Typography color={medium}>Network Platform</Typography>

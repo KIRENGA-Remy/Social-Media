@@ -10,10 +10,10 @@ const UserImage: React.FC<UserImageProps> = ({ image, size='60px'}) => {
     return(
         <Box width={size} height={size}>
             <img 
-            style={{ borderRadius: '50%', objectFit: 'cover'}}
+            style={{ borderRadius: '50%', objectFit: 'cover', cursor:'pointer'}}
             width={size}
             height={size}
-            src={`http://localhost:4321/${image}`}
+            src={image}
             alt="user" />
         </Box>
     )
