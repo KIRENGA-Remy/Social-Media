@@ -23,7 +23,7 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
       );
 
         if (response.ok) {
-          const fetchedData = await response.json();
+          const fetchedData = await response.json()
           dispatch(setLogin(fetchedData.user));
           navigate('/home');
         } else {

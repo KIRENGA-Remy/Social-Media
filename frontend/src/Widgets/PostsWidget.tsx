@@ -49,7 +49,7 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
 
   return (
     <>
-      {posts.map((post: Post) => (
+      {posts?.map((post: Post) => (
         <PostWidget
           key={post._id}
           postId={post._id}

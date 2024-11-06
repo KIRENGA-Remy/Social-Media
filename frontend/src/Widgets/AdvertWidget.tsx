@@ -2,13 +2,14 @@ import { Typography, useTheme } from "@mui/material";
 import WidgetWrapper from "../components/WidgetWrapper";
 
 const AdvertWidget: React.FC = () => {
-  const { palette } = useTheme();
-  const dark = palette.secondary.dark;
-  const main = palette.secondary.main;
-  const medium = palette.secondary.light;
+  // const { palette } = useTheme();
+  const theme = useTheme();
+  const dark = theme.palette.secondary.dark;
+  const main = theme.palette.secondary.main;
+  const medium = theme.palette.secondary.light;
 
   return (
-    <WidgetWrapper theme={useTheme()}>
+    <WidgetWrapper>
       <div className="flex justify-between gap-2">
         <Typography color={dark} variant="h5" fontWeight="500">
           Sponsored

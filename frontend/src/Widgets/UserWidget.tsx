@@ -31,6 +31,7 @@ interface User {
 const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
   const [user, setUser] = useState<User | null>(null);
   const { palette } = useTheme();
+  console.log(palette);
   const navigate = useNavigate();
   const dark = palette.secondary.dark;
   const medium = palette.secondary.light;

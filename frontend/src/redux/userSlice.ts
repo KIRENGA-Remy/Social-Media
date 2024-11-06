@@ -14,14 +14,16 @@ export interface User {
 }
 interface UserState {
   loading:boolean,
-  user: User | null;  // Only one user
+  user: User | null;  
+  isAuthenticated: boolean;
   mode: "light" | "dark";
   token: string | null;
   error: string | null;
 }
 
 const initialState: UserState = {
-  user: null,  // Null initially, no user logged in
+  user: null,  
+  isAuthenticated: false,
   mode: "light",
   loading:false,
   token: null,
@@ -51,7 +53,6 @@ export const UserSlice = createSlice({
       location: string,
       token: string }>
     ) => {
-      // Replace the current user with the logged-in user
       state.user = {
         _id: action.payload._id,
         friends: action.payload.friends,
@@ -65,11 +66,13 @@ export const UserSlice = createSlice({
         location: action.payload.location,
       };
       state.token = action.payload.token;
+      state.isAuthenticated = true;
     },
 
     setLogout: (state) => {
       state.user = null;
       state.token = null;
+      state.isAuthenticated = false;
     },
     setFriends: (state, action: PayloadAction<{ friends: string[]}>) => {
       if(state.user){
