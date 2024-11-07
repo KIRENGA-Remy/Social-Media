@@ -24,14 +24,13 @@ export default async function register(req: Request, res: Response): Promise<voi
     }
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt)
-    const image=req.file?.filename
     const newUser = new Users({
         firstName,
         lastName,
         email,
         password: hashedPassword,
         occupation,
-        picturePath:image,
+        picturePath,
         viewedProfile: Math.floor(Math.random() * 10000),
         impressions: Math.floor(Math.random() * 10000),
         location
