@@ -127,7 +127,71 @@ const Register: React.FC = () => {
                 />
               </div>
 
-              {/* Repeat for other fields... */}
+                            {/* Last Name */}
+                            <div className="flex flex-col w-full">
+                <label htmlFor="lastName" className="text-gray-600 font-semibold flex justify-between">
+                  Last name
+                  <ErrorMessage name="lastName" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="lastName"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your last name"
+                />
+              </div>
+              {/* Email */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="email" className="text-gray-600 font-semibold flex justify-between">
+                  Email
+                  <ErrorMessage name="email" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="email"
+                  name="email"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your email"
+                />
+              </div>
+              {/* Password */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="password" className="text-gray-600 font-semibold flex justify-between">
+                  Password
+                  <ErrorMessage name="password" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="password"
+                  name="password"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your password"
+                />
+              </div>
+              {/* Occupation */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="occupation" className="text-gray-600 font-semibold flex justify-between">
+                  Occupation
+                  <ErrorMessage name="occupation" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="occupation"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your occupation"
+                />
+              </div>
+              {/* Location */}
+              <div className="flex flex-col w-full">
+                <label htmlFor="location" className="text-gray-600 font-semibold flex justify-between">
+                  Location
+                  <ErrorMessage name="location" component="div" className="text-red-500" />
+                </label>
+                <Field
+                  type="text"
+                  name="location"
+                  className="p-1 rounded-sm focus:border-blue-600 border border-[#20B486] bg-white indent-3 text-gray-700"
+                  placeholder="Enter your location"
+                />
+              </div>
 
               <div className="flex flex-col w-full">
                 <label className="text-gray-600 font-semibold flex justify-between">Profile Picture (Optional)</label>
