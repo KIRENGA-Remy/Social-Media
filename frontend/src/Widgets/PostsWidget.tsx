@@ -14,13 +14,12 @@ interface PostsWidgetProps {
 
 const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
-  const { posts } = useSelector((state: RootState) => state.posts || { posts: [] });
+  const posts = useSelector((state: RootState) => state.posts.posts);
 
   const getPosts = async () => {
     try {
       const response = await axios.get(`http://localhost:4321/posts`, { withCredentials: true });
-      const postData = response.data;
-      dispatch(setPosts({ posts: postData }));
+      dispatch(setPosts({ posts: response.data }));
     } catch (error) {
       console.error("Error while fetching posts:", error);
     }
@@ -29,8 +28,7 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
   const getUserPosts = async () => {
     try {
       const response = await axios.get(`http://localhost:4321/posts/${userId}`, { withCredentials: true });
-      const fetchedUserPosts = response.data;
-      dispatch(setPosts({ posts: fetchedUserPosts }));
+      dispatch(setPosts({ posts: response.data }));
     } catch (error) {
       console.error("Error fetching user posts:", error);
     }
@@ -42,7 +40,7 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
     } else {
       getPosts();
     }
-  }, [isProfile, dispatch, userId]);
+  }, [isProfile, userId]);
 
   return (
     <>

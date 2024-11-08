@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface Post{
+export interface Post {
     _id: string;
     userId: string;
     firstName: string;
@@ -14,29 +14,28 @@ export interface Post{
 }
 
 interface PostState {
-    posts: Post[]
+    posts: Post[];
 }
 
-const initialState : PostState = {
+const initialState: PostState = {
     posts: []
-}
+};
 
-export const PostSlice = createSlice ({
+export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        setPosts: (state, action: PayloadAction<{posts: Post[]}>) => {
+        setPosts: (state, action: PayloadAction<{ posts: Post[] }>) => {
             state.posts = action.payload.posts;
-            console.log(state.posts); 
         },
-        setPost: (state, action: PayloadAction<{ post: Post}>) => {
-            const updatedPost = state.posts.map((post) => 
-                post._id === action.payload.post._id ? action.payload.post : post
-            )
-            state.posts = updatedPost;
+        setPost: (state, action: PayloadAction<{ post: Post }>) => {
+            const index = state.posts.findIndex((post) => post._id === action.payload.post._id);
+            if (index !== -1) {
+                state.posts[index] = action.payload.post;  
+            }
         }
     }
-})
+});
 
-export const { setPosts, setPost } = PostSlice.actions;
-export default PostSlice.reducer;
+export const { setPosts, setPost } = postSlice.actions;
+export default postSlice.reducer;
