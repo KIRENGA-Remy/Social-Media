@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 // import ProtectedRoute from './routes/ProtectedRoute';
 import PostCreation from './pages/PostCreation';
-import ErrorBoundary from './components/ErrorBoundary';
+// import ErrorBoundary from './components/ErrorBoundary';
 import { RootState } from './redux/store';
 
 function App() {
@@ -20,14 +20,14 @@ function App() {
     <ThemeProvider theme={theme}>
   <CssBaseline />
   <BrowserRouter>
-    <ErrorBoundary>
+    {/* <ErrorBoundary> */}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create/post" element={<PostCreation />} />
         <Route path="/home" element={<Dashboard />} />
       </Routes>
-    </ErrorBoundary>
+    {/* </ErrorBoundary> */}
   </BrowserRouter>
 </ThemeProvider>
   );

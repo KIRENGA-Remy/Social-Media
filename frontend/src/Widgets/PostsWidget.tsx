@@ -5,6 +5,7 @@ import PostWidget from "./PostWidget";
 import { RootState } from "../redux/store";
 import { Post } from "../redux/postSlice"; 
 import axios from "axios";
+import { Typography } from "@mui/material";
 
 interface PostsWidgetProps {
   userId: string;
@@ -13,16 +14,13 @@ interface PostsWidgetProps {
 
 const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
-  const { posts } = useSelector((state: RootState) => state.posts);
-  console.log(posts);
+  const { posts } = useSelector((state: RootState) => state.posts || { posts: [] });
 
   const getPosts = async () => {
     try {
-    const response = await axios.get(`http://localhost:4321/posts`,
-        {withCredentials: true}
-    )
-    const postData = await response.data;
-    dispatch(setPosts({ posts: postData }));
+      const response = await axios.get(`http://localhost:4321/posts`, { withCredentials: true });
+      const postData = response.data;
+      dispatch(setPosts({ posts: postData }));
     } catch (error) {
       console.error("Error while fetching posts:", error);
     }
@@ -30,11 +28,9 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
 
   const getUserPosts = async () => {
     try {
-    const response = await axios.get(`http://localhost:4321/posts/${userId}`,
-        {withCredentials: true}
-    )
-    const fetchedUserPosts = await response.data;
-    dispatch(setPosts({ posts: fetchedUserPosts }));
+      const response = await axios.get(`http://localhost:4321/posts/${userId}`, { withCredentials: true });
+      const fetchedUserPosts = response.data;
+      dispatch(setPosts({ posts: fetchedUserPosts }));
     } catch (error) {
       console.error("Error fetching user posts:", error);
     }
@@ -46,24 +42,28 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
     } else {
       getPosts();
     }
-  }, [isProfile]);
+  }, [isProfile, dispatch, userId]);
 
   return (
     <>
-      {posts?.map((post: Post) => (
-        <PostWidget
-          key={post._id}
-          postId={post._id}
-          postUserId={post.userId}
-          name={`${post.firstName} ${post.lastName}`}
-          description={post.description}
-          location={post.location?.trim() || ""} 
-          picturePath={post.picturePath}
-          userPicturePath={post.userPicturePath}
-          likes={Object.fromEntries(post.likes)} 
-          comments={post.comments || []} 
-        />
-      ))}
+      {posts.length === 0 ? (
+        <Typography>No posts available</Typography>
+      ) : (
+        posts.map((post: Post) => (
+          <PostWidget
+            key={post._id}
+            postId={post._id}
+            postUserId={post.userId}
+            name={`${post.firstName} ${post.lastName}`}
+            description={post.description}
+            location={post.location?.trim() || ""} 
+            picturePath={post.picturePath}
+            userPicturePath={post.userPicturePath}
+            likes={post.likes ? Object.fromEntries(post.likes) : {}} 
+            comments={post.comments || []} 
+          />
+        ))
+      )}
     </>
   );
 };

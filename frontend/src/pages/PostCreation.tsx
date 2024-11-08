@@ -36,37 +36,36 @@ const PostCreation: React.FC = () => {
 
   const handlePostCreation = async () => {
     if (!user?._id) {
-      console.error('User ID is not available');
-      return;
+        console.error('User ID is not available');
+        return;
     }
 
     setIsCreating(true);
     try {
-      const response = await axios.post(
-        'http://localhost:4321/posts',
-        {
-          userId: user._id,
-          description,
-          picturePath,
-        },
-        
-        { withCredentials: true }
-      );
+        const response = await axios.post(
+            'http://localhost:4321/posts',
+            {
+                userId: user._id,
+                description,
+                picturePath,
+            },
+            { withCredentials: true }
+        );
 
-      if (response.status === 200) {
-        console.log('Post created successfully');
-        const updatedPosts = response.data.posts;
-        dispatch(setPosts({ posts: updatedPosts }));
-        navigate('/home')
-      }
+        if (response.status === 200) {
+            const updatedPosts = response.data.posts;  
+            dispatch(setPosts({ posts: updatedPosts }));
+            navigate('/home');
+        }
     } catch (err) {
-      console.error('Error creating post:', err);
+        console.error('Error creating post:', err);
     } finally {
-      setIsCreating(false);
-      setDescription('');
-      setPicturePath('');
+        setIsCreating(false);
+        setDescription('');
+        setPicturePath('');
     }
-  };
+};
+
 
   return (
     <Box sx={{ padding: 2, maxWidth: 600, margin: '0 auto', display:'flex', flexDirection:'column' , gap:'2rem' }}>

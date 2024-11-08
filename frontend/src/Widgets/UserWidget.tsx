@@ -9,79 +9,48 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "../components/UserImage";
 import WidgetWrapper from "../components/WidgetWrapper";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import twitter from '../assets/twitter.png';
-// import linkedin from '../assets/linkedin.png';
-import axios from "axios";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 interface UserWidgetProps {
   userId: string;
   picturePath: string;
 }
 
-interface User {
-  firstName: string;
-  lastName: string;
-  location: string;
-  occupation: string;
-  viewedProfile: number;
-  impressions: number;
-  friends: string[];
-}
-
 const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const { user } = useSelector((state: RootState) => state.user);
+  
   const theme = useTheme();
   const navigate = useNavigate();
   const dark = theme.palette.secondary.dark;
   const medium = theme.palette.secondary.light;
   const main = theme.palette.secondary.main;
 
-  const getUser = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4321/users/${userId}`, {
-        withCredentials: true,
-      });
-      const fetchedData = response.data as User;
-      setUser(fetchedData);
-    } catch (err) {
-      console.error("Error while fetching user data", err);
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, [userId]);
-
   if (!user) {
     return null;
   }
-
-  const { firstName, lastName, location, occupation, viewedProfile, impressions, friends } = user;
 
   return (
     <WidgetWrapper>
       {/* FIRST ROW */}
       <Box display="flex" justifyContent="space-between" alignItems="center" pb="1.1rem"
         onClick={() => navigate(`/profile/${userId}`)}>
-        <Box display="flex" gap="1rem" alignItems="center">
+        <Box display="flex" flexDirection={"column"} gap="1rem" alignItems="center">
           <UserImage image={picturePath} />
           <Box>
             <Typography
               variant="h4"
               color={dark}
-              fontWeight="500"
+              fontWeight="300"
               sx={{
-                cursor: "pointer",
                 "&:hover": {
                   color: theme.palette.primary.light,
                 },
               }}
             >
-              {firstName} {lastName}
+              {user?.firstName} {user?.lastName}
             </Typography>
-            <Typography color={medium}>{friends?.length} friends</Typography>
+            <Typography color={medium} fontSize={'1rem'}>{user?.friends?.length ?? 0} friends</Typography>
           </Box>
         </Box>
         <ManageAccountsOutlined />
@@ -93,11 +62,11 @@ const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
+          <Typography color={medium} fontSize={'1rem'}>I am located at {user?.location}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{occupation}</Typography>
+          <Typography color={medium} fontSize={'1rem'}>I am a {user?.occupation}</Typography>
         </Box>
       </Box>
 
@@ -105,16 +74,16 @@ const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
 
       {/* THIRD ROW */}
       <Box p="1rem 0">
-        <Box mb="0.5rem">
+        <Box display={'flex'} justifyContent={'space-between'} mb="0.5rem">
           <Typography color={medium}>Who's viewed your profile</Typography>
           <Typography color={main} fontWeight="500">
-            {viewedProfile}
+            {user?.viewedProfile}
           </Typography>
         </Box>
-        <Box>
+        <Box display={'flex'} justifyContent={'space-between'} mb="0.5rem">
           <Typography color={medium}>Impressions of your post</Typography>
           <Typography color={main} fontWeight="500">
-            {impressions}
+            {user?.impressions}
           </Typography>
         </Box>
       </Box>
@@ -131,22 +100,22 @@ const UserWidget: React.FC<UserWidgetProps> = ({ userId, picturePath }) => {
           <Box display="flex" alignItems="center" gap="1rem">
             <XIcon fontSize="large" sx={{ color: main }} />
             <Box>
-              <Typography color={main} fontWeight="500">Twitter</Typography>
+              <Typography color={main} fontWeight="500" fontSize={"1rem"}>Twitter</Typography>
               <Typography color={medium}>Social Network</Typography>
             </Box>
           </Box>
-          <EditOutlined sx={{ color: main }} />
+          <EditOutlined sx={{ color: main, cursor: 'pointer'}} />
         </Box>
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap="1rem">
           <LinkedInIcon fontSize="large" sx={{ color: main }} />
             <Box>
-              <Typography color={main} fontWeight="500">LinkedIn</Typography>
+              <Typography color={main} fontWeight="500" fontSize={"1rem"}>LinkedIn</Typography>
               <Typography color={medium}>Network Platform</Typography>
             </Box>
           </Box>
-          <EditOutlined sx={{ color: main }} />
+          <EditOutlined sx={{ color: main, cursor: 'pointer' }} />
         </Box>
       </Box>
     </WidgetWrapper>

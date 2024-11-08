@@ -5,7 +5,7 @@ import register from './controllers/register'
 import login from './controllers/login'
 import auth from './controllers/auth'
 import getUserFriends from './controllers/getUserFriends'
-import getUsers from './controllers/getUsers'
+import getUser from './controllers/getUser'
 import addRemoveFriend from './controllers/addRemoveFriend'
 import createPost from './controllers/createPost'
 import getUserPosts from './controllers/getUserPosts'
@@ -79,7 +79,7 @@ app.get("/", (req: Request, res: Response) => {
 // app.post("/auth/register", register)
 app.post("/auth/login", login)
 app.get("/auth/validate", auth)
-app.get("/users/:userId", getUsers)
+app.get("/users/:userId", getUser)
 app.get("/users/:userId/friends", getUserFriends)
 app.patch("/users/:id/friends/:friendId", addRemoveFriend)
 app.post('/posts', createPost)

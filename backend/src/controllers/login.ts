@@ -33,7 +33,6 @@ export default async function login(req: Request, res: Response): Promise<void> 
       path:"/",
       maxAge: 3600000,
       sameSite: 'none', 
-    
     });
     res.status(200).json({ message: 'Login successful', user });
   } catch (err) {
