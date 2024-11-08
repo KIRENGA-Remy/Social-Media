@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidget picturePath={user?.picturePath} />
+          <MyPostWidget userPicturePath={user?.picturePath} />
           <PostsWidget userId={user?._id} /> 
         </Box>
         {isNonMobileScreens && (

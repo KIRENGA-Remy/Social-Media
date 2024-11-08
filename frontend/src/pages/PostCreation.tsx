@@ -66,7 +66,6 @@ const PostCreation: React.FC = () => {
     }
 };
 
-
   return (
     <Box sx={{ padding: 2, maxWidth: 600, margin: '0 auto', display:'flex', flexDirection:'column' , gap:'2rem' }}>
       <Typography variant="h4" component="h1" gutterBottom>
