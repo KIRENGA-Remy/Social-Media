@@ -251,13 +251,11 @@
 
 
 import {
-  DeleteOutlined,
   AttachFileOutlined,
   GifBoxOutlined,
   ImageOutlined,
   MicOutlined,
   MoreHorizOutlined,
-  CloudUploadOutlined
 } from "@mui/icons-material";
 import {
   Box,
@@ -266,7 +264,6 @@ import {
   InputBase,
   useTheme,
   Button,
-  IconButton,
   useMediaQuery,
 } from "@mui/material";
 import Dropzone from "react-dropzone";
@@ -303,7 +300,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
     if (!file) return;
     const base64 = await imageToBase64(file);
     if (typeof base64 === "string") {
-      setPicturePath(base64); // Store the base64 string
+      setPicturePath(base64); 
     } else {
       console.error("Error converting image to base64 string");
     }
@@ -315,7 +312,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
       return;
     }
     setIsCreating(true);
-
+  
     try {
       const response = await axios.post(
         "http://localhost:4321/posts",
@@ -326,9 +323,10 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
         },
         { withCredentials: true }
       );
-
+  
       if (response.status === 200) {
-        dispatch(setPosts(response.data.posts));
+        const postsResponse = await axios.get(`http://localhost:4321/posts/${user?._id}`, { withCredentials: true });
+        dispatch(setPosts({ posts: postsResponse.data }));
         setDescription("");
         setPicturePath(null);
       }
