@@ -250,7 +250,6 @@
 
 
 
-
 import {
   DeleteOutlined,
   AttachFileOutlined,
@@ -258,6 +257,7 @@ import {
   ImageOutlined,
   MicOutlined,
   MoreHorizOutlined,
+  CloudUploadOutlined
 } from "@mui/icons-material";
 import {
   Box,
@@ -290,11 +290,10 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const [description, setDescription] = useState("");
-  const [picturePath, setPicturePath] = useState<File | null>(null);
+  const [picturePath, setPicturePath] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const mediumMain = theme.palette.secondary.dark;
-  const medium = theme.palette.secondary.light;
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
@@ -304,7 +303,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
     if (!file) return;
     const base64 = await imageToBase64(file);
     if (typeof base64 === "string") {
-      setPicturePath(file); // Keep the file object for display, but send base64 for storage
+      setPicturePath(base64); // Store the base64 string
     } else {
       console.error("Error converting image to base64 string");
     }
@@ -316,15 +315,14 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
       return;
     }
     setIsCreating(true);
-    
+
     try {
-      const imageBase64 = picturePath ? await imageToBase64(picturePath) : null;
       const response = await axios.post(
         "http://localhost:4321/posts",
         {
           userId: user._id,
           description,
-          picturePath: imageBase64,
+          picturePath,
         },
         { withCredentials: true }
       );
@@ -354,27 +352,10 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
             backgroundColor: theme.palette.secondary.light,
             borderRadius: "2rem",
             padding: "0.5rem 1rem",
+            color: 'black'
           }}
         />
       </Box>
-
-      {userPicturePath && (
-        <Box mt="1rem" position="relative">
-          <Box
-            border={`2px dashed ${medium}`}
-            borderRadius="5px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            p="1rem"
-          >
-            <Typography>Post uploaded</Typography>
-            <IconButton onClick={() => setPicturePath(null)}>
-              <DeleteOutlined />
-            </IconButton>
-          </Box>
-        </Box>
-      )}
 
       <Dropzone
         onDrop={(acceptedFiles) => handleImageUpload(acceptedFiles[0])}
@@ -386,13 +367,24 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
             {...getRootProps()}
             border={`2px dashed ${theme.palette.primary.main}`}
             p="1rem"
-            mt="1rem"
+            mt="2rem"
             sx={{ "&:hover": { cursor: "pointer" } }}
           >
-            <input {...getInputProps()} />
-            <Typography color={mediumMain} align="center">
-              Drag & drop an image here, or click to select an image
-            </Typography>
+            {picturePath ? (
+              <>
+                <input {...getInputProps()} />
+                <Typography color={mediumMain} align="center">
+                  Image uploaded
+                </Typography>
+              </>
+            ) : (
+              <>
+                <input {...getInputProps()} />
+                <Typography color={mediumMain} align="center">
+                  Drag & drop an image here, or click to upload
+                </Typography>
+              </>
+            )}
           </Box>
         )}
       </Dropzone>
@@ -400,22 +392,22 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
       <Divider sx={{ margin: "1.25rem 0" }} />
 
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box display="flex" gap="0.5rem" onClick={() => setIsCreating(!isCreating)} sx={{ cursor: "pointer" }}>
+        <Box display="flex" gap="0.5rem" sx={{ cursor: "pointer" }}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography color={mediumMain}>Image</Typography>
         </Box>
 
         {isNonMobileScreens ? (
           <>
-            <Box display="flex" gap="0.5rem">
+            <Box display="flex" gap="0.5rem" sx={{ cursor: 'pointer' }}>
               <GifBoxOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Clip</Typography>
             </Box>
-            <Box display="flex" gap="0.5rem">
+            <Box display="flex" gap="0.5rem" sx={{ cursor: 'pointer' }}>
               <AttachFileOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Attachment</Typography>
             </Box>
-            <Box display="flex" gap="0.5rem">
+            <Box display="flex" gap="0.5rem" sx={{ cursor: 'pointer' }}>
               <MicOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Audio</Typography>
             </Box>
@@ -426,7 +418,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
 
         <Button
           onClick={handlePostCreation}
-          disabled={isCreating || !description}
+          disabled={isCreating || (!description && !picturePath)}
           sx={{
             color: theme.palette.background.alt,
             backgroundColor: theme.palette.primary.main,

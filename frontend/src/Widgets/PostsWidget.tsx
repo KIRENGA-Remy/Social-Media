@@ -16,7 +16,7 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
   const dispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts.posts);
   console.log(posts);
-
+  
   const getPosts = async () => {
     try {
       const response = await axios.get(`http://localhost:4321/posts`, { withCredentials: true });
