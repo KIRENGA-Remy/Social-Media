@@ -26,7 +26,7 @@ export const postSlice = createSlice({
     initialState,
     reducers: {
         setPosts: (state, action: PayloadAction<{ posts: Post[] }>) => {
-            state.posts = action.payload.posts;
+            state.posts = Array.isArray(action.payload.posts) ? action.payload.posts : [];
         },
         setPost: (state, action: PayloadAction<{ post: Post }>) => {
             const index = state.posts.findIndex((post) => post._id === action.payload.post._id);
@@ -36,6 +36,5 @@ export const postSlice = createSlice({
         }
     }
 });
-
 export const { setPosts, setPost } = postSlice.actions;
 export default postSlice.reducer;

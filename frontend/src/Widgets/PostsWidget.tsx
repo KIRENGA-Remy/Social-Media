@@ -1,54 +1,20 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "../redux/postSlice";
+import { useSelector } from "react-redux";
 import PostWidget from "./PostWidget";
 import { RootState } from "../redux/store";
 import { Post } from "../redux/postSlice"; 
-import axios from "axios";
 import { Typography } from "@mui/material";
 
-interface PostsWidgetProps {
-  userId: string;
-  isProfile?: boolean;
-}
-
-const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) => {
-  const dispatch = useDispatch();
+const PostsWidget: React.FC = () => {
   const posts = useSelector((state: RootState) => state.posts.posts);
-  console.log(posts);
-  
-  const getPosts = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4321/posts`, { withCredentials: true });
-      dispatch(setPosts({ posts: response.data }));
-    } catch (error) {
-      console.error("Error while fetching posts:", error);
-    }
-  };
-
-  const getUserPosts = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4321/posts/${userId}`, { withCredentials: true });
-      dispatch(setPosts({ posts: response.data }));
-    } catch (error) {
-      console.error("Error fetching user posts:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (isProfile) {
-      getUserPosts();
-    } else {
-      getPosts();
-    }
-  }, [isProfile, userId]);
+  const safePosts = Array.isArray(posts) ? posts : [];
+  console.log(safePosts);
 
   return (
     <>
-      {posts.length === 0 ? (
+      {safePosts.length === 0 ? (
         <Typography>No posts available</Typography>
       ) : (
-        posts.map((post: Post) => (
+        safePosts.map((post: Post) => (
           <PostWidget
             key={post._id}
             postId={post._id}
@@ -58,7 +24,7 @@ const PostsWidget: React.FC<PostsWidgetProps> = ({ userId, isProfile = false }) 
             location={post.location?.trim() || ""} 
             picturePath={post.picturePath}
             userPicturePath={post.userPicturePath}
-            likes={post.likes ? Object.fromEntries(post.likes) : {}} 
+            likes={post.likes ? Object.fromEntries(Array.from(post.likes.entries())) : {}}
             comments={post.comments || []} 
           />
         ))

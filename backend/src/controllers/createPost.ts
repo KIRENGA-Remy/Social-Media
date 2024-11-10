@@ -22,7 +22,8 @@ export default async function createPost(req: Request, res: Response): Promise<v
             likes: {},
             comments: []
         });
-
+        console.log(req.body);
+        
         await newPost.save();
         const posts = await Posts.find();  
 
