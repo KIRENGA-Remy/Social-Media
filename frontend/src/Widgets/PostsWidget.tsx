@@ -24,7 +24,7 @@ const PostsWidget: React.FC = () => {
             location={post.location?.trim() || ""} 
             picturePath={post.picturePath}
             userPicturePath={post.userPicturePath}
-            likes={post.likes ? Object.fromEntries(Array.from(post.likes.entries())) : {}}
+            likes={post.likes || []}
             comments={post.comments || []} 
           />
         ))

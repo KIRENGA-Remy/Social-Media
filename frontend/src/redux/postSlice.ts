@@ -9,7 +9,7 @@ export interface Post {
     description: string;
     picturePath: string;
     userPicturePath: string;
-    likes: Map<string, boolean>;
+    likes: string[];
     comments: string[];
 }
 

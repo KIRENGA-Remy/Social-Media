@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPost } from "../redux/postSlice";
 import axios from "axios";
+
 interface PostWidgetProps {
   postId: string;
   postUserId: string;
@@ -19,7 +20,7 @@ interface PostWidgetProps {
   location: string;
   picturePath?: string | null;
   userPicturePath: string;
-  likes: Record<string, boolean>;
+  likes: string[];
   comments: string[];
 }
 
@@ -36,8 +37,8 @@ const PostWidget: React.FC<PostWidgetProps> = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
-  const isLiked = postUserId ? Boolean(likes[postUserId]) : false;
-  const likeCount = Object.keys(likes).length;
+  const isLiked = likes.includes(postUserId); 
+  const likeCount = likes.length; 
 
   const { palette } = useTheme();
   const main = palette.secondary.main;
