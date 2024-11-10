@@ -8,18 +8,16 @@ import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import Friend from "../components/Friend";
 import WidgetWrapper from "../components/WidgetWrapper";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPost } from "../redux/postSlice";
-import { RootState } from "../redux/store";
 import axios from "axios";
-
 interface PostWidgetProps {
   postId: string;
   postUserId: string;
   name: string;
   description: string;
   location: string;
-  picturePath?: string;
+  picturePath?: string | null;
   userPicturePath: string;
   likes: Record<string, boolean>;
   comments: string[];
@@ -38,8 +36,7 @@ const PostWidget: React.FC<PostWidgetProps> = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.user);
-  const isLiked = user?._id ? Boolean(likes[user._id]) : false;
+  const isLiked = postUserId ? Boolean(likes[postUserId]) : false;
   const likeCount = Object.keys(likes).length;
 
   const { palette } = useTheme();
@@ -50,7 +47,7 @@ const PostWidget: React.FC<PostWidgetProps> = ({
     try {
       const response = await axios.patch(
         `http://localhost:4321/posts/${postId}`,
-        { userId: user?._id },
+        { userId: postUserId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -60,8 +57,8 @@ const PostWidget: React.FC<PostWidgetProps> = ({
       );
       const updatedPost = response.data;
       dispatch(setPost({ post: updatedPost }));
-    } catch (error) {
-      console.error("Error updating like:", error);
+    } catch (err) {
+      console.error("Error updating like:", err);
     }
   };
 

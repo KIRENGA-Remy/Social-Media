@@ -20,7 +20,11 @@ const PostsSchema : Schema = new mongoose.Schema({
     description: { type: String},
     picturePath: { type: String},
     userPicturePath: { type: String},
-    likes: { type: Map },
+    likes: {
+        type: Map,
+        of: Boolean,
+        default: new Map(),
+      },      
     comments: { type: [String], default: [] }
 })
 

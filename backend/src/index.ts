@@ -85,7 +85,7 @@ app.patch("/users/:id/friends/:friendId", addRemoveFriend)
 app.post('/posts', createPost)
 app.get('/posts', getFeedPosts)
 app.get('/posts/:userId', getUserPosts)
-app.patch('/posts/:id', likePost)
+app.patch('/posts/:postId', likePost)
 
 const PORT = process.env.PORT || 4321;
 app.listen(PORT, () => {
