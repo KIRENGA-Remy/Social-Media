@@ -22,7 +22,7 @@ import multer, { Multer } from 'multer';
 dotenv.config()
 const app = express()
 connectDB()
-app.use(express.json({ limit: '50mb'}));
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use(express.urlencoded({ limit: '50mb', extended: true}))
 

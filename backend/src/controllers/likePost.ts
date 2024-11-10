@@ -5,6 +5,7 @@ export default async function likePost(req: Request, res: Response): Promise<voi
   try {
     const { postId } = req.params;
     const { userId } = req.body;
+
     if (!postId || !userId) {
       res.status(400).json({ message: "Post ID and User ID are required." });
       return;
@@ -15,16 +16,18 @@ export default async function likePost(req: Request, res: Response): Promise<voi
       res.status(404).json({ message: "Post not found" });
       return;
     }
-    const isLiked = post.likes.get(userId);
+
+    const isLiked = post.likes.includes(userId);
 
     if (isLiked) {
-      post.likes.delete(userId);
+      post.likes = post.likes.filter(id => id !== userId);  
     } else {
-      post.likes.set(userId, true);
+      post.likes.push(userId); 
     }
-    await post.save(); 
 
-    res.status(200).json(post); 
+    await post.save();
+
+    res.status(200).json(post);
   } catch (err) {
     res.status(500).json({ message: "Failed to like/dislike the post", error: err });
   }

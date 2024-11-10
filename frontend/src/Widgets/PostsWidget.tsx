@@ -6,6 +6,8 @@ import { Typography } from "@mui/material";
 
 const PostsWidget: React.FC = () => {
   const posts = useSelector((state: RootState) => state.posts.posts);
+  console.log(posts);
+  
   const safePosts = Array.isArray(posts) ? posts : [];
   console.log(safePosts);
 
