@@ -53,7 +53,7 @@ function Navbar() {
         </Typography>
         {isNonMobileScreens && (
           <div className='rounded-md py-1 px-8 flex justify-between gap-16' style={{ background: neutralLight }}>
-            <InputBase placeholder="Search..." sx={{ fontWeight: 'bold', fontSize: '14px' }} />
+            <InputBase placeholder="Search..." sx={{ fontWeight: 'bold', fontSize: '14px', color:'black' }} />
             <IconButton sx={{ color: 'white', fontWeight: 'bold' }}>
               <Search />
             </IconButton>

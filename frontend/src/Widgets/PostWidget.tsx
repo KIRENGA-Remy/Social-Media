@@ -36,15 +36,20 @@ const PostWidget: React.FC<PostWidgetProps> = ({
   comments,
 }) => {
   const [isComments, setIsComments] = useState(false);
+  const [localLikes, setLocalLikes] = useState(likes);
   const dispatch = useDispatch();
-  const isLiked = likes.includes(postUserId); 
-  const likeCount = likes.length; 
+  const isLiked = localLikes.includes(postUserId); // Check if user has liked the post
+  const likeCount = localLikes.length;
 
   const { palette } = useTheme();
   const main = palette.secondary.main;
   const primary = palette.primary.main;
 
   const patchLike = async () => {
+    setLocalLikes(prevLikes =>
+      isLiked ? prevLikes.filter(id => id !== postUserId) : [...prevLikes, postUserId]
+    );
+
     try {
       const response = await axios.patch(
         `http://localhost:4321/posts/${postId}`,
@@ -58,8 +63,13 @@ const PostWidget: React.FC<PostWidgetProps> = ({
       );
       const updatedPost = response.data;
       dispatch(setPost({ post: updatedPost }));
+      setLocalLikes(updatedPost.likes); // Update localLikes with the latest data from backend
+
     } catch (err) {
       console.error("Error updating like:", err);
+      setLocalLikes(prevLikes =>
+        isLiked ? [...prevLikes, postUserId] : prevLikes.filter(id => id !== postUserId)
+      );
     }
   };
 
@@ -84,7 +94,7 @@ const PostWidget: React.FC<PostWidgetProps> = ({
         />
       )}
       <Box display="flex" justifyContent="space-between" mt="1rem">
-        <Box display="flex" gap="0.5rem">
+        <Box display="flex" gap="0.5rem" alignItems="center">
           <IconButton onClick={patchLike}>
             {isLiked ? (
               <FavoriteOutlined sx={{ color: primary }} />

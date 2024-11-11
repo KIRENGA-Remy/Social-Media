@@ -61,17 +61,23 @@ const FriendListWidget: React.FC<FriendListWidgetProps> = ({ userId }) => {
       ) : error ? (
         <p>Error fetching friends: {error}</p>
       ) : (
+        <>
+        {friends.length === 0 ? (
+        <Typography sx={{display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem'}}>You don't have any friend!</Typography>
+      ) : (
         <Box display="flex" flexDirection="column" gap="1.5rem">
-          {friends.map((friend: any) => (
-            <Friend
-              key={friend._id}
-              friendId={friend._id}
-              name={`${friend.firstName} ${friend.lastName}`}
-              subtitle={friend.occupation}
-              userPicturePath={friend.picturePath}  
-            />
-          ))}
-        </Box>
+        {friends.map((friend: any) => (
+          <Friend
+            key={friend._id}
+            friendId={friend._id}
+            name={`${friend.firstName} ${friend.lastName}`}
+            subtitle={friend.occupation}
+            userPicturePath={friend.picturePath}  
+          />
+        ))}
+      </Box>
+      )}
+        </>
       )}
     </WidgetWrapper>
   );

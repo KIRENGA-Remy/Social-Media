@@ -29,11 +29,16 @@ const Dashboard: React.FC = () => {
           <UserWidget userId={user?._id} picturePath={user?.picturePath} />
         </Box>
         <Box
+          
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
           sx={{
             height: isNonMobileScreens ? "80vh" : "auto",
-            overflowY: "auto", 
+            overflowY:'auto',
+            '&::-webkit-scrollbar':
+            {
+            width:0,
+            }
           }}
         >
           <MyPostWidget userPicturePath={user?.picturePath} />

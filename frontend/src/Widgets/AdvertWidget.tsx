@@ -1,5 +1,6 @@
 import { Typography, useTheme } from "@mui/material";
 import WidgetWrapper from "../components/WidgetWrapper";
+import ba from '../assets/ba.png'
 
 const AdvertWidget: React.FC = () => {
   const theme = useTheme();
@@ -13,10 +14,10 @@ const AdvertWidget: React.FC = () => {
         <Typography color={dark} variant="h5" fontWeight="500">
           Sponsored
         </Typography>
-        <Typography color={medium} variant="body2">Create Ad</Typography>
+        <Typography color={medium} variant="body2" sx={{ cursor:'pointer', ":hover":'underline'}}>Create Ad</Typography>
       </div>
       <img
-        src="http://localhost:4321/assets/ba.png"
+        src={ba}
         alt="advert"
         width="100%"
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
