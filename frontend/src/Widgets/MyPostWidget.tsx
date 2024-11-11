@@ -37,6 +37,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
   const [description, setDescription] = useState("");
   const [picturePath, setPicturePath] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null); 
 
   const mediumMain = theme.palette.secondary.dark;
 
@@ -56,11 +57,12 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
 
   const handlePostCreation = async () => {
     if (!user?._id) {
-      console.error("User ID is not available");
+      console.error("User ID is not available", error);
       return;
     }
     setIsCreating(true);
-  
+    setError(null); 
+
     try {
       const response = await axios.post(
         "http://localhost:4321/posts",
@@ -71,15 +73,21 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
         },
         { withCredentials: true }
       );
-  
+
       if (response.status === 200) {
-        const postsResponse = await axios.get(`http://localhost:4321/posts/${user?._id}`, { withCredentials: true });
-        dispatch(setPosts({ posts: postsResponse.data.posts }));
-        setDescription("");
-        setPicturePath(null);
+        try {
+          const postsResponse = await axios.get(`http://localhost:4321/posts/${user._id}`, { withCredentials: true });
+          dispatch(setPosts({ posts: postsResponse.data.posts }));
+          setDescription("");
+          setPicturePath(null);
+        } catch (err) {
+          console.error("Error retrieving posts:", err);
+          setError("Failed to load posts. Please try again.");
+        }
       }
     } catch (err) {
       console.error("Error creating post:", err);
+      setError("Failed to create post. Please try again.");
     } finally {
       setIsCreating(false);
     }

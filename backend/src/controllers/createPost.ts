@@ -11,6 +11,7 @@ export default async function createPost(req: Request, res: Response): Promise<v
             res.status(404).json({ message: "User not found" });
             return;
         }
+
         const newPost = new Posts({
             userId,
             firstName: user.firstName,
@@ -19,15 +20,14 @@ export default async function createPost(req: Request, res: Response): Promise<v
             description,
             picturePath,
             userPicturePath: user.picturePath,
-            likes: {},
+            likes: [],
             comments: []
         });
-        console.log(req.body);
-        
-        await newPost.save();
-        const posts = await Posts.find();  
 
-        res.status(200).json({ message: "Post created successfully", posts });
+        await newPost.save();
+        const userPosts = await Posts.find({ userId });  
+
+        res.status(200).json({ message: "Post created successfully", posts: userPosts });
         return;
     } catch (err) {
         console.error("Error creating post:", err);
@@ -35,4 +35,3 @@ export default async function createPost(req: Request, res: Response): Promise<v
         return;
     }
 }
-
