@@ -17,10 +17,7 @@ interface FriendProps {
 const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-//   const { _id } = useSelector((state: any) => state.user); 
 const { user } = useSelector((state: RootState) => state.user);
-//   const token = useSelector((state: any) => state.token);
-//   const friends = useSelector((state: any) => state.user.friends);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;

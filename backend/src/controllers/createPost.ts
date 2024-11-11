@@ -25,8 +25,8 @@ export default async function createPost(req: Request, res: Response): Promise<v
         });
 
         await newPost.save();
-        const userPosts = await Posts.find({ userId });  
-
+        // const userPosts = await Posts.find({ userId });  
+        const userPosts = await Posts.find(); 
         res.status(200).json({ message: "Post created successfully", posts: userPosts });
         return;
     } catch (err) {
