@@ -95,8 +95,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
 
   return (
     <WidgetWrapper>
-      <Box display="flex" justifyContent="space-between" gap="1rem">
-        <UserImage image={userPicturePath} />
+      <Box display={'flex'} alignItems={"center"} gap={"20px"} mt={'0.75rem'}>
         <InputBase
           placeholder="What's on your mind..."
           value={description}
@@ -106,9 +105,11 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
             backgroundColor: theme.palette.secondary.light,
             borderRadius: "2rem",
             padding: "0.5rem 1rem",
-            color: 'black'
+            color: 'black',
+            maxHeight:"fit-content"
           }}
         />
+        <UserImage  image={userPicturePath} />
       </Box>
 
       <Dropzone

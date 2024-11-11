@@ -6,15 +6,13 @@ import { Typography } from "@mui/material";
 
 const PostsWidget: React.FC = () => {
   const posts = useSelector((state: RootState) => state.posts.posts);
-  console.log(posts);
   
   const safePosts = Array.isArray(posts) ? posts : [];
-  console.log(safePosts);
 
   return (
     <>
       {safePosts.length === 0 ? (
-        <Typography>No posts available</Typography>
+        <Typography sx={{display:'flex', alignItems:'center', justifyContent:'center', fontSize:'8px'}}>No posts available</Typography>
       ) : (
         safePosts.map((post: Post) => (
           <PostWidget

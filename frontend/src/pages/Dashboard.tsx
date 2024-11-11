@@ -31,6 +31,10 @@ const Dashboard: React.FC = () => {
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
+          sx={{
+            height: isNonMobileScreens ? "80vh" : "auto",
+            overflowY: "auto", 
+          }}
         >
           <MyPostWidget userPicturePath={user?.picturePath} />
           <PostsWidget /> 

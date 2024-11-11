@@ -47,8 +47,7 @@ const { user } = useSelector((state: RootState) => state.user);
   return (
     <div>
       <div className="flex justify-between gap-2">
-        <UserImage image={userPicturePath} size="55px" />
-        <Box
+      <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
             navigate(0);
@@ -71,6 +70,7 @@ const { user } = useSelector((state: RootState) => state.user);
             {subtitle}
           </Typography>
         </Box>
+        <UserImage image={userPicturePath} size="55px" />
       </div>
       <IconButton
         onClick={patchFriend}
