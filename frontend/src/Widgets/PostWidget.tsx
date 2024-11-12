@@ -63,7 +63,7 @@ const PostWidget: React.FC<PostWidgetProps> = ({
       );
       const updatedPost = response.data;
       dispatch(setPost({ post: updatedPost }));
-      setLocalLikes(updatedPost.likes); // Update localLikes with the latest data from backend
+      setLocalLikes(updatedPost.likes); 
 
     } catch (err) {
       console.error("Error updating like:", err);

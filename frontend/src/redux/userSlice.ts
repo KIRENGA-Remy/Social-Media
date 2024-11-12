@@ -71,9 +71,9 @@ export const UserSlice = createSlice({
     },
     setFriends: (state, action: PayloadAction<{ friends: string[]}>) => {
       if(state.user){
-        state.user.friends = action.payload.friends
+        state.user.friends = action.payload.friends;
       } else {
-        console.error("No user friend existing!")
+        console.error("User does not exist in state when updating friends!");
       }
     },
     setError: (state, action: PayloadAction<string | null>) => {

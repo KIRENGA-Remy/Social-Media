@@ -8,11 +8,10 @@ const PostsWidget: React.FC = () => {
   const posts = useSelector((state: RootState) => state.posts.posts);
   
   const safePosts = Array.isArray(posts) ? posts : [];
-
   return (
     <>
       {safePosts.length === 0 ? (
-        <Typography sx={{display:'flex', alignItems:'center', justifyContent:'center', fontSize:'8px'}}>No posts available</Typography>
+        <Typography sx={{display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem', mt:'4rem'}}>No posts available</Typography>
       ) : (
         safePosts.map((post: Post) => (
           <PostWidget

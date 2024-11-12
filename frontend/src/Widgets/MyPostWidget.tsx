@@ -17,7 +17,7 @@ import {
 import Dropzone from "react-dropzone";
 import UserImage from "../components/UserImage";
 import WidgetWrapper from "../components/WidgetWrapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../redux/postSlice";
 import { RootState } from "../redux/store";
@@ -75,15 +75,10 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
       );
 
       if (response.status === 200) {
-        try {
-          const postsResponse = await axios.get(`http://localhost:4321/posts/${user._id}`, { withCredentials: true });
-          dispatch(setPosts({ posts: postsResponse.data.posts }));
-          setDescription("");
-          setPicturePath(null);
-        } catch (err) {
-          console.error("Error retrieving posts:", err);
-          setError("Failed to load posts. Please try again.");
-        }
+        // Fetch the updated posts
+        await fetchPosts();
+        setDescription("");
+        setPicturePath(null);
       }
     } catch (err) {
       console.error("Error creating post:", err);
@@ -92,6 +87,25 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
       setIsCreating(false);
     }
   };
+
+  // Function to fetch posts from the database
+  const fetchPosts = async () => {
+    try {
+      const postsResponse = await axios.get(`http://localhost:4321/posts`, {
+        withCredentials: true,
+      });
+      dispatch(setPosts({ posts: postsResponse.data.posts }));
+    } catch (err) {
+      console.error("Error retrieving posts:", err);
+      setError("Failed to load posts. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchPosts();
+    }
+  }, [user]);
 
   return (
     <WidgetWrapper>
@@ -109,7 +123,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
             maxHeight:"fit-content"
           }}
         />
-        <UserImage  image={userPicturePath} />
+        <UserImage image={userPicturePath} />
       </Box>
 
       <Dropzone

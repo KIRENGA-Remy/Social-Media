@@ -17,7 +17,7 @@ interface FriendProps {
 const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -25,22 +25,24 @@ const { user } = useSelector((state: RootState) => state.user);
   const main = palette.secondary.light;
   const medium = palette.secondary.dark;
 
-  const isFriend = user?.friends.find((friend: any) => friend._id === friendId);
+  const isFriend = user?.friends.includes(friendId);
 
-  const patchFriend = async () => {
-
+  const toggleFriend = async () => {
     try {
-        const response = await axios.patch(`http://localhost:3001/users/:${user?._id}/friends/${friendId}`,{
-            headers: {
-                    "Content-Type": "application/json",
-                  },
-                  withCredentials: true
-            }
-        )
-        const fetchedData = await response.data;
-        dispatch(setFriends({ friends: fetchedData }));
+      const response = await axios.patch(
+        `http://localhost:4321/users/${user?._id}/friends/${friendId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      const updatedFriends = response.data;
+      dispatch(setFriends({ friends: updatedFriends }));
     } catch (err) {
-        console.error('Error while adding or removing friend', err)
+      console.error("Error while adding or removing friend", err);
     }
   };
 
@@ -73,7 +75,7 @@ const { user } = useSelector((state: RootState) => state.user);
         <UserImage image={userPicturePath} size="55px" />
       </div>
       <IconButton
-        onClick={patchFriend}
+        onClick={toggleFriend}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
         {isFriend ? (
