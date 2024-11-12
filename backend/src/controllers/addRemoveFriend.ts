@@ -3,9 +3,9 @@ import Users from '../models/Users';
 
 export default async function addRemoveFriend(req: Request, res: Response): Promise<void> {
     try {
-        const { id, friendId } = req.params;
+        const { userId, friendId } = req.params;
         
-        const user = await Users.findById(id);
+        const user = await Users.findById(userId);
         const friend = await Users.findById(friendId);
 
         if (!user) {
@@ -20,10 +20,10 @@ export default async function addRemoveFriend(req: Request, res: Response): Prom
 
         if (user.friends.includes(friendId)) {
             user.friends = user.friends.filter((frendId) => frendId !== friendId);
-            friend.friends = friend.friends.filter((frendId) => frendId !== id);
+            friend.friends = friend.friends.filter((frendId) => frendId !== userId);
         } else {
             user.friends.push(friendId);
-            friend.friends.push(id);
+            friend.friends.push(userId);
         }
 
         await user.save();

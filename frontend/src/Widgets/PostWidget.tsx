@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPost } from "../redux/postSlice";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 interface PostWidgetProps {
   postId: string;
@@ -37,8 +39,9 @@ const PostWidget: React.FC<PostWidgetProps> = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const [localLikes, setLocalLikes] = useState(likes);
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const isLiked = localLikes.includes(postUserId); // Check if user has liked the post
+  const isLiked = localLikes.includes(postUserId); 
   const likeCount = localLikes.length;
 
   const { palette } = useTheme();
@@ -80,6 +83,7 @@ const PostWidget: React.FC<PostWidgetProps> = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
+        userId={user?._id || ""}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}

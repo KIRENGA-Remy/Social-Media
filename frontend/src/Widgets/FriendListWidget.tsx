@@ -72,7 +72,8 @@ const FriendListWidget: React.FC<FriendListWidgetProps> = ({ userId }) => {
             friendId={friend._id}
             name={`${friend.firstName} ${friend.lastName}`}
             subtitle={friend.occupation}
-            userPicturePath={friend.picturePath}  
+            userPicturePath={friend.picturePath}
+            userId={user?._id || ""}  
           />
         ))}
       </Box>

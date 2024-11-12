@@ -51,13 +51,13 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
     if (typeof base64 === "string") {
       setPicturePath(base64); 
     } else {
-      console.error("Error converting image to base64 string");
+      console.error("Error converting image to base64 string", error);
     }
   };
 
   const handlePostCreation = async () => {
     if (!user?._id) {
-      console.error("User ID is not available", error);
+      console.error("User ID is not available");
       return;
     }
     setIsCreating(true);
@@ -75,7 +75,6 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
       );
 
       if (response.status === 200) {
-        // Fetch the updated posts
         await fetchPosts();
         setDescription("");
         setPicturePath(null);
@@ -88,10 +87,10 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
     }
   };
 
-  // Function to fetch posts from the database
   const fetchPosts = async () => {
+    setError(null); 
     try {
-      const postsResponse = await axios.get(`http://localhost:4321/posts`, {
+      const postsResponse = await axios.get("http://localhost:4321/posts", {
         withCredentials: true,
       });
       dispatch(setPosts({ posts: postsResponse.data.posts }));
@@ -109,7 +108,7 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
 
   return (
     <WidgetWrapper>
-      <Box display={'flex'} alignItems={"center"} gap={"20px"} mt={'0.75rem'}>
+      <Box display="flex" alignItems="center" gap="20px" mt="0.75rem">
         <InputBase
           placeholder="What's on your mind..."
           value={description}
@@ -119,8 +118,8 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
             backgroundColor: theme.palette.secondary.light,
             borderRadius: "2rem",
             padding: "0.5rem 1rem",
-            color: 'black',
-            maxHeight:"fit-content"
+            color: "black",
+            maxHeight: "fit-content",
           }}
         />
         <UserImage image={userPicturePath} />
@@ -168,15 +167,15 @@ const MyPostWidget: React.FC<MyPostWidgetProps> = ({ userPicturePath }) => {
 
         {isNonMobileScreens ? (
           <>
-            <Box display="flex" gap="0.5rem" sx={{ cursor: 'pointer' }}>
+            <Box display="flex" gap="0.5rem" sx={{ cursor: "pointer" }}>
               <GifBoxOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Clip</Typography>
             </Box>
-            <Box display="flex" gap="0.5rem" sx={{ cursor: 'pointer' }}>
+            <Box display="flex" gap="0.5rem" sx={{ cursor: "pointer" }}>
               <AttachFileOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Attachment</Typography>
             </Box>
-            <Box display="flex" gap="0.5rem" sx={{ cursor: 'pointer' }}>
+            <Box display="flex" gap="0.5rem" sx={{ cursor: "pointer" }}>
               <MicOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Audio</Typography>
             </Box>

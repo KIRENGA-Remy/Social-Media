@@ -12,9 +12,10 @@ interface FriendProps {
   name: string;
   subtitle: string;
   userPicturePath: string;
+  userId: string
 }
 
-const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePath, userId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.user);
@@ -30,7 +31,7 @@ const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePa
   const toggleFriend = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:4321/users/${user?._id}/friends/${friendId}`,
+        `http://localhost:4321/users/${userId}/friends/${friendId}`,
         {},
         {
           headers: {
