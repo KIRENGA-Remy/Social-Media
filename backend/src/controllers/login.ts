@@ -28,6 +28,7 @@ export default async function login(req: Request, res: Response): Promise<void> 
     );
 
     res.cookie('token', token, {
+      expires: new Date(Date.now() + 12 * 60 * 60 * 1000),
       httpOnly: true, 
       secure: true, 
       path:"/",
