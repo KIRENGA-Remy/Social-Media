@@ -6,19 +6,21 @@ import { setFriends } from "../redux/userSlice";
 import UserImage from "./UserImage";
 import { RootState } from "../redux/store";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface FriendProps {
   friendId: string;
   name: string;
   subtitle: string;
   userPicturePath: string;
-  userId: string
+  userId: string;
 }
 
 const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePath, userId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.user);
+  const [isFriend, setIsFriend] = useState(user?.friends.includes(friendId));
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -26,7 +28,10 @@ const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePa
   const main = palette.secondary.light;
   const medium = palette.secondary.dark;
 
-  const isFriend = user?.friends.includes(friendId);
+  // Update isFriend whenever the user or friends list changes
+  useEffect(() => {
+    setIsFriend(user?.friends.includes(friendId));
+  }, [user, user?.friends]);
 
   const toggleFriend = async () => {
     try {
@@ -50,7 +55,7 @@ const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePa
   return (
     <div>
       <div className="flex justify-between gap-2">
-      <Box
+        <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
             navigate(0);
@@ -75,16 +80,20 @@ const Friend: React.FC<FriendProps> = ({ friendId, name, subtitle, userPicturePa
         </Box>
         <UserImage image={userPicturePath} size="55px" />
       </div>
-      <IconButton
-        onClick={toggleFriend}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
-      </IconButton>
+
+      {/* Only show the IconButton if the friendId is different from the logged-in userId */}
+      {friendId !== userId && (
+        <IconButton
+          onClick={toggleFriend}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        >
+          {isFriend ? (
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          ) : (
+            <PersonAddOutlined sx={{ color: primaryDark }} />
+          )}
+        </IconButton>
+      )}
     </div>
   );
 };
